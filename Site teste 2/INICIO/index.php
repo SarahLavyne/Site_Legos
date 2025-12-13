@@ -1,12 +1,6 @@
 <?php 
-    session_start(); // 1. ESSENCIAL: Inicia a sessão UMA ÚNICA VEZ (Antes de qualquer HTML)
-
-    // Inclui a conexão com o banco de dados
+    session_start(); // 1. ESSENCIAL: Inicia a sessão UMA ÚNICA VEZ
     include '../conexao.php'; 
-
-    // Prepara a query para buscar os produtos
-    $sql = "SELECT id, nome, descricao, preco, categoria, imagem_url FROM produtos ORDER BY id DESC";
-    $resultado = $conn->query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -17,7 +11,6 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="logo">
@@ -38,7 +31,6 @@
         </div>
     </header>
 
-    <!-- Hero -->
     <section class="hero">
         <div class="container hero-content">
             <div class="hero-text">
@@ -49,11 +41,9 @@
                     <button class="btn-secondary btn-large">Ver Lançamentos</button>
                 </div>
             </div>
-
         </div>
     </section>
 
-    <!-- Filtros -->
     <section class="filtros-section">
         <div class="container">
             <div class="filtros-container">
@@ -71,47 +61,51 @@
         </div>
     </section>
 
-    <!-- Produtos -->
-        <section id="produtos" class="products-section">
+    <section id="produtos" class="products-section">
         <div class="container">
             <h2 class="section-title">Produtos em Destaque</h2>
             <div class="products-grid" id="gridProdutos">
                 <?php 
-                // 2. Query (Consulta) para buscar todos os produtos
                 $sql = "SELECT id, nome, descricao, preco, categoria, imagem_url FROM produtos ORDER BY id DESC";
                 $resultado = $conn->query($sql);
 
-                // 3. Verifica se há produtos e inicia o loop
                 if ($resultado->num_rows > 0) {
                     while($produto = $resultado->fetch_assoc()) {
-                        // O HTML é gerado dentro do loop para cada produto
                         ?>
-                        
                         <div class="product-card" data-categoria="<?php echo htmlspecialchars($produto['categoria']); ?>" data-preco="<?php echo htmlspecialchars($produto['preco']); ?>">
                             
-                            <img src="imagens/<?php echo htmlspecialchars($produto['imagem_url']); ?>" height=250 width=250" alt="<?php echo htmlspecialchars($produto['nome']); ?>">
-                            <h3><?php echo htmlspecialchars($produto['nome']); ?></h3>
+                            <a href="detalhes.php?id=<?php echo $produto['id']; ?>">
+                                <img src="imagens/<?php echo htmlspecialchars($produto['imagem_url']); ?>" height="250" width="250" alt="<?php echo htmlspecialchars($produto['nome']); ?>">
+                            </a>
+
+                            <h3>
+                                <a href="detalhes.php?id=<?php echo $produto['id']; ?>" style="text-decoration: none; color: inherit;">
+                                    <?php echo htmlspecialchars($produto['nome']); ?>
+                                </a>
+                            </h3>
+
                             <p class="product-description"><?php echo htmlspecialchars($produto['descricao']); ?></p>
+                            
                             <div class="product-footer">
                                 <span class="price">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></span>
-                                <button class="btn-add-cart" data-id="<?php echo $produto['id']; ?>">Adicionar ao Carrinho</button>
+                                
+                                <div class="card-buttons" style="display: flex; gap: 5px; flex-direction: column; width: 50%;">
+                                    <button class="btn-add-cart" data-id="<?php echo $produto['id']; ?>">Adicionar no carrinho</button>
+                                    <button class="btn-add-cart" data-id="<?php echo $produto['id']; ?>" style="background-color: #ffa41c; border:20px; padding: 10px; border-radius: 4px; cursor: pointer;">Comprar Agora</button>
+                                </div>
                             </div>
                         </div>
-                        
                         <?php
                     }
                 } else {
                     echo "<p>Nenhum produto encontrado na loja.</p>";
                 }
-
-                // 4. Fecha a conexão
                 $conn->close();
                 ?>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">

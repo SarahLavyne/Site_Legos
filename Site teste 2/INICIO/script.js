@@ -1,5 +1,5 @@
 // =================================================================
-// LÓGICA DA PÁGINA INICIAL (index.php)
+// LÓGICA DA ÁREA PÚBLICA (index.php e detalhes.php)
 // =================================================================
 
 // --- 1. Scroll suave ---
@@ -15,44 +15,46 @@ document.querySelectorAll('a[href^="#"]').forEach((ancora) => {
 
 // --- 2. Variáveis globais (Filtro e Ordenação) ---
 const gridProdutos = document.getElementById("gridProdutos")
-const botoesFiltro = document.querySelectorAll(".filtro-btn")
-const btnOrdenarPreco = document.getElementById("btnOrdenarPreco")
-let ordemPreco = "nenhuma" // 'crescente', 'decrescente', 'nenhuma'
-let categoriaAtiva = "todos"
+// Verificação de segurança: só roda filtros se a grade existir (evita erro na página detalhes.php)
+if (gridProdutos) {
+    const botoesFiltro = document.querySelectorAll(".filtro-btn")
+    const btnOrdenarPreco = document.getElementById("btnOrdenarPreco")
+    let ordemPreco = "nenhuma" 
+    let categoriaAtiva = "todos"
 
-// --- 3. Filtrar por categoria ---
-botoesFiltro.forEach((botao) => {
-    botao.addEventListener("click", function () {
-        botoesFiltro.forEach((b) => b.classList.remove("ativo"))
-        this.classList.add("ativo")
+    // --- 3. Filtrar por categoria ---
+    botoesFiltro.forEach((botao) => {
+        botao.addEventListener("click", function () {
+            botoesFiltro.forEach((b) => b.classList.remove("ativo"))
+            this.classList.add("ativo")
 
-        categoriaAtiva = this.dataset.categoria
-        filtrarProdutos()
+            categoriaAtiva = this.dataset.categoria
+            filtrarProdutos()
+        })
     })
-})
 
-// --- 4. Ordenar por preço ---
-btnOrdenarPreco.addEventListener("click", function () {
-    if (ordemPreco === "nenhuma" || ordemPreco === "decrescente") {
-        ordemPreco = "crescente"
-        this.classList.remove("decrescente")
-        this.classList.add("crescente")
-    } else {
-        ordemPreco = "decrescente"
-        this.classList.remove("crescente")
-        this.classList.add("decrescente")
+    // --- 4. Ordenar por preço ---
+    if(btnOrdenarPreco) {
+        btnOrdenarPreco.addEventListener("click", function () {
+            if (ordemPreco === "nenhuma" || ordemPreco === "decrescente") {
+                ordemPreco = "crescente"
+                this.classList.remove("decrescente")
+                this.classList.add("crescente")
+            } else {
+                ordemPreco = "decrescente"
+                this.classList.remove("crescente")
+                this.classList.add("decrescente")
+            }
+            ordenarProdutos()
+        })
     }
-
-    ordenarProdutos()
-})
+}
 
 // --- 5. Função para filtrar produtos ---
 function filtrarProdutos() {
     const cartoesProdutos = Array.from(document.querySelectorAll(".product-card"))
-
     cartoesProdutos.forEach((cartao) => {
         const categoria = cartao.dataset.categoria
-
         if (categoriaAtiva === "todos" || categoria === categoriaAtiva) {
             cartao.classList.remove("oculto")
         } else {
@@ -64,29 +66,41 @@ function filtrarProdutos() {
 // --- 6. Função para ordenar produtos ---
 function ordenarProdutos() {
     const cartoesProdutos = Array.from(document.querySelectorAll(".product-card"))
-
     cartoesProdutos.sort((a, b) => {
         const precoA = Number.parseFloat(a.dataset.preco)
         const precoB = Number.parseFloat(b.dataset.preco)
-
         if (ordemPreco === "crescente") {
             return precoA - precoB
         } else {
             return precoB - precoA
         }
     })
-
     cartoesProdutos.forEach((cartao) => {
         gridProdutos.appendChild(cartao)
     })
 }
 
-// --- 7. Adicionar ao carrinho (AJAX) ---
-document.querySelectorAll(".btn-add-cart, .btn-add-cart-sugestao").forEach(button => {
+// =================================================================
+// LÓGICA DE CARRINHO (ATUALIZADA PARA INDEX E DETALHES)
+// =================================================================
+
+// --- 7. Botão "Adicionar ao Carrinho" (Genérico + Estilo Amazon) ---
+document.querySelectorAll(".btn-add-cart").forEach(button => {
     button.addEventListener("click", function() {
         const produtoId = this.dataset.id;
+        // Salva o texto original para restaurar depois (ex: "Adicionar" ou "Adicionar ao carrinho")
+        const originalText = this.textContent;
         
-        // Caminho CORRIGIDO: Sobe para SITE TESTE 2/ e desce para CARRINHO/
+        // Feedback Visual
+        this.disabled = true;
+        this.textContent = "Adicionando...";
+        
+        // Se for o botão amarelo da Amazon, mantemos a cor amarela durante o carregamento
+        if(this.classList.contains('btn-amazon-add')) {
+            this.style.backgroundColor = "#f0c14b"; 
+        }
+
+        // Caminho AJAX
         fetch('../CARRINHO/adicionar_carrinho.php', { 
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -96,23 +110,55 @@ document.querySelectorAll(".btn-add-cart, .btn-add-cart-sugestao").forEach(butto
         .then(data => {
             console.log(data); 
             
-            // Feedback visual
+            // Sucesso
             this.textContent = "✓ Adicionado!";
-            this.style.background = "#2ed573";
+            this.style.backgroundColor = "#2ed573"; // Verde
+            this.style.color = "#fff"; // Texto branco para garantir leitura no verde
+
             setTimeout(() => {
-                this.textContent = "Adicionar ao Carrinho";
-                this.style.background = "";
+                this.textContent = originalText;
+                this.style.backgroundColor = ""; // Remove estilo inline (volta ao CSS original)
+                this.style.color = "";
+                this.disabled = false;
             }, 1500);
         })
         .catch(error => {
             console.error('Erro:', error);
-            // Em caso de erro, pode ser útil avisar o usuário
-            alert("Erro ao adicionar o produto. Verifique se está logado."); 
+            alert("Erro ao adicionar. Verifique se está logado."); 
+            this.disabled = false;
+            this.textContent = originalText;
         });
     });
 });
 
-// --- 8. Animação nas categorias ---
+// --- 8. Botão "Comprar Agora" (Laranja - Redireciona) ---
+document.querySelectorAll(".btn-buy-now").forEach(button => {
+    button.addEventListener("click", function() {
+        const produtoId = this.dataset.id;
+        
+        this.textContent = "Processando...";
+        this.disabled = true;
+
+        fetch('../CARRINHO/adicionar_carrinho.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: 'produto_id=' + produtoId
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Redireciona imediatamente para o carrinho
+            window.location.href = "../CARRINHO/carrinho.php";
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert("Erro ao processar compra.");
+            this.disabled = false;
+            this.textContent = "Comprar agora";
+        });
+    });
+});
+
+// --- 9. Animação nas categorias ---
 const cartoesCategorias = document.querySelectorAll(".category-card")
 cartoesCategorias.forEach((cartao) => {
     cartao.addEventListener("click", function () {
@@ -121,7 +167,7 @@ cartoesCategorias.forEach((cartao) => {
     })
 })
 
-// --- 9. Efeito parallax no hero ---
+// --- 10. Efeito parallax no hero ---
 window.addEventListener("scroll", () => {
     const imagemHero = document.querySelector(".hero-image img")
     if (imagemHero) {
@@ -129,6 +175,3 @@ window.addEventListener("scroll", () => {
         imagemHero.style.transform = `translateY(${rolagem * 0.3}px)`
     }
 })
-
-// NOTA: A lógica de atualização de quantidade (funções formatCurrencyBRL e LÓGICA DE ATUALIZAÇÃO DE QUANTIDADE AJAX)
-// deve ser movida para o CARRINHO/carrinho.js

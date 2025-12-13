@@ -43,6 +43,19 @@ if ($resultado->num_rows > 0) {
     <title>Meu Carrinho - Brick-Up</title>
     <link rel="stylesheet" href="../INICIO/styles.css"> 
     <link rel="stylesheet" href="carrinho.css"> 
+    
+    <style>
+        .link-produto-nome {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .link-produto-nome:hover {
+            color: #e67a00;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -86,9 +99,20 @@ if ($resultado->num_rows > 0) {
                             
                             <tr>
                                 <td>
-                                    <img src="../INICIO/imagens/<?php echo htmlspecialchars($item['imagem_url']); ?>" alt="<?php echo htmlspecialchars($item['nome']); ?>" width="50">
-                                    <?php echo htmlspecialchars($item['nome']); ?>
+                                    <div style="display: flex; align-items: center; gap: 15px;">
+                                        <a href="../INICIO/detalhes.php?id=<?php echo $item['produto_id']; ?>">
+                                            <img src="../INICIO/imagens/<?php echo htmlspecialchars($item['imagem_url']); ?>" 
+                                                 alt="<?php echo htmlspecialchars($item['nome']); ?>" 
+                                                 width="60"
+                                                 style="border: 1px solid #eee; border-radius: 4px;">
+                                        </a>
+
+                                        <a href="../INICIO/detalhes.php?id=<?php echo $item['produto_id']; ?>" class="link-produto-nome">
+                                            <?php echo htmlspecialchars($item['nome']); ?>
+                                        </a>
+                                    </div>
                                 </td>
+
                                 <td>R$ <?php echo number_format($item['preco'], 2, ',', '.'); ?></td>
                                 
                                 <td data-carrinho-id="<?php echo $item['carrinho_id']; ?>" data-preco="<?php echo $item['preco']; ?>">
@@ -131,10 +155,8 @@ if ($resultado->num_rows > 0) {
                 <?php
                 // --- Lógica de Sugestões ---
                 
-                // Converte a lista de IDs em uma string para usar na consulta SQL (ex: 1, 5, 10)
                 $ids_para_excluir = !empty($produtos_no_carrinho) ? implode(',', $produtos_no_carrinho) : '0';
                 
-                // Query para buscar produtos que NÃO estão no carrinho (máximo 4 sugestões aleatórias)
                 $sql_sugestoes = "SELECT id, nome, preco, imagem_url 
                                   FROM produtos 
                                   WHERE id NOT IN ($ids_para_excluir) 
@@ -157,8 +179,6 @@ if ($resultado->num_rows > 0) {
                         </div>
                         <?php
                     }
-                } else {
-                    // Mensagem caso não haja mais produtos além dos que já estão no carrinho
                 }
                 ?>
             </div>
