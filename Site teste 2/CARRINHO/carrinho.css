@@ -82,19 +82,51 @@ main.container h2 {
     text-align: center;
 }
 
-.btn-update-qty {
-    background-color: #4a90e2; 
-    color: white;
-    border: none;
-    padding: 5px 10px;
+/* --- Novo Estilo para Controle de Quantidade (+ / -) --- */
+.quantidade-controle {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    cursor: pointer;
-    font-size: 12px;
-    transition: background-color 0.2s;
+    overflow: hidden;
 }
 
-.btn-update-qty:hover {
-    background-color: #3b76cc;
+.quantidade-controle button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    color: #007bff; /* Azul para destaque, como na sua imagem */
+    transition: background-color 0.1s;
+}
+
+.quantidade-controle .btn-qty-minus {
+    color: #666; 
+    border-right: 1px solid #ccc;
+}
+.quantidade-controle .btn-qty-plus {
+    border-left: 1px solid #ccc;
+}
+
+.quantidade-controle button:hover {
+    background-color: #ddd;
+}
+
+.quantidade-controle .qty-display {
+    width: 30px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 30px;
+    display: inline-block;
+}
+
+.subtotal-display {
+    font-weight: bold; /* Para o JS ser mais notável ao atualizar */
 }
 
 /* Botão Remover (X) */

@@ -23,12 +23,6 @@
             <div class="logo">
                 <h1>🧱 BRICK-UP</h1>
             </div>
-            <nav class="nav">
-                <a href="#produtos">Produtos</a>
-                <a href="#categorias">Categorias</a>
-                <a href="#sobre">Sobre</a>
-                <a href="#contato">Contato</a>
-            </nav>
             <div class="header-actions">
                 <?php if (isset($_SESSION['usuario_id'])): ?>
                     <span class="user-greeting">
