@@ -34,12 +34,11 @@
                     <span class="user-greeting">
                         Olá, <strong><?php echo htmlspecialchars($_SESSION['usuario_nome']); ?></strong>!
                     </span>
-                    <a href="../perfil.php" class="btn-secondary">Meu Perfil</a>
-                    <a href="../carrinho.php" class="btn-primary">Carrinho</a>
+                    <a href="../PERFIL/perfil.php" class="btn-secondary">Meu Perfil</a>
+                    <a href="../CARRINHO/carrinho.php" class="btn-primary">Carrinho</a>
                     <a href="logout.php" class="btn-secondary">Sair</a>
                 <?php else: ?>
-                    <a href="../login.php" class="btn-secondary">Entrar</a>
-                    <a href="../login.php" class="btn-primary">Cadastrar</a>
+                    <a href="../LOGIN/login.php" class="btn-secondary">Entrar</a>
                 <?php endif; ?>
             </div>
         </div>

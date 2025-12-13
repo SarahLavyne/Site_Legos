@@ -1,0 +1,255 @@
+/* --- 1. Estilos Gerais da Página de Carrinho --- */
+
+/* Estilos de título */
+main.container h2 {
+    font-size: 28px;
+    color: #333;
+    /* Linha de destaque para separar, inspirada em títulos de e-commerce */
+    border-bottom: 2px solid #ffc107; 
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+/* --- 2. Layout Principal (Itens + Resumo) --- */
+
+/* Wrapper principal que contém a lista e o resumo */
+.carrinho-itens {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+/* Garante que a lista de itens use o espaço restante */
+.carrinho-tabela-wrapper { 
+    flex-grow: 1; 
+    max-width: 70%; /* Dá mais espaço para os itens do que para o resumo */
+}
+
+
+/* --- 3. Tabela de Itens (carrinho-tabela) --- */
+
+.carrinho-tabela {
+    width: 100%;
+    border-collapse: collapse; 
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
+    border-radius: 4px;
+    overflow: hidden; /* Garante que a sombra/borda fique reta */
+}
+
+.carrinho-tabela th {
+    background-color: #f7f7f7;
+    color: #666;
+    font-weight: 600;
+    text-align: left;
+    padding: 15px 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.carrinho-tabela td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+/* Produto (Imagem e Nome) */
+.carrinho-tabela td:first-child {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: 500;
+}
+
+.carrinho-tabela img {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    object-fit: contain;
+}
+
+/* --- 4. Controle de Quantidade e Formulários --- */
+
+.form-quantidade {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.input-quantidade {
+    width: 50px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.btn-update-qty {
+    background-color: #4a90e2; 
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.2s;
+}
+
+.btn-update-qty:hover {
+    background-color: #3b76cc;
+}
+
+/* Botão Remover (X) */
+.btn-remover {
+    background: none;
+    color: #a00;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.btn-remover:hover {
+    background-color: #fdd;
+}
+
+/* --- 5. Resumo da Compra (Lateral) --- */
+
+.carrinho-resumo {
+    width: 30%; /* Ocupa cerca de 30% da largura */
+    min-width: 250px; 
+    max-width: 350px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    
+    /* Faz o resumo "grudar" no topo ao rolar */
+    position: sticky; 
+    top: 20px; 
+    height: fit-content; /* Ajusta a altura ao conteúdo */
+}
+
+.carrinho-resumo h3 {
+    font-size: 20px;
+    color: #333;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 15px;
+    font-weight: normal;
+    display: flex;
+    justify-content: space-between; /* Espaça o texto do valor */
+}
+
+.carrinho-resumo h3 strong {
+    color: #007bff; /* Cor de destaque para o valor total */
+    font-weight: bold;
+}
+
+/* Ajuste no botão de Checkout */
+.btn-checkout {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    text-align: center;
+    background-color: #3483fa; /* Azul forte, inspirado no ML */
+    color: white !important; /* Força a cor branca */
+    border-radius: 6px;
+    margin-top: 20px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.btn-checkout:hover {
+    background-color: #2b78e4;
+}
+
+/* --- 6. Responsividade Básica (Opcional) --- */
+@media (max-width: 900px) {
+    .carrinho-itens {
+        flex-direction: column; /* Empilha itens e resumo em telas menores */
+    }
+
+    .carrinho-resumo {
+        width: 100%;
+        max-width: none;
+        position: static; /* Remove o sticky em telas pequenas */
+    }
+}
+
+/* --- Seção de Sugestões de Itens --- */
+
+.sugestoes-section {
+    padding: 40px 0;
+    margin-top: 30px;
+    border-top: 1px solid #ddd;
+}
+
+.sugestoes-section .section-title {
+    font-size: 24px;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.sugestoes-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Alinha à esquerda */
+}
+
+.sugestao-card {
+    width: 180px; /* Largura fixa para mini-cards */
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    text-align: center;
+    background-color: #fcfcfc;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.sugestao-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.sugestao-card h4 {
+    font-size: 14px;
+    margin-bottom: 5px;
+    height: 35px; /* Altura fixa para alinhar os cards */
+    overflow: hidden;
+    color: #444;
+}
+
+.sugestao-card .price {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.btn-add-cart-sugestao {
+    background-color: #38b000; /* Verde de Ação */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.btn-add-cart-sugestao:hover {
+    background-color: #2f9400;
+}

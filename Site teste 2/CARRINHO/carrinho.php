@@ -48,7 +48,6 @@ $resultado = $conn->query($sql);
                     Olá, <strong><?php echo htmlspecialchars($_SESSION['usuario_nome']); ?></strong>!
                 </span>
                 <a href="../INICIO/perfil.php" class="btn-secondary">Meu Perfil</a>
-                <a href="carrinho.php" class="btn-primary">🛒 Carrinho</a>
                 <a href="../INICIO/logout.php" class="btn-secondary">Sair</a>
             </div>
         </div>
@@ -108,6 +107,57 @@ $resultado = $conn->query($sql);
             <?php else: ?>
                 <p>Seu carrinho está vazio. <a href="../INICIO/index.php">Clique aqui para explorar produtos!</a></p>
             <?php endif; ?>
+        </section>
+        </section>
+
+        <section class="sugestoes-section">
+            <h2 class="section-title">Você também pode gostar...</h2>
+            <div class="sugestoes-grid">
+                <?php
+                // --- Lógica de Sugestões ---
+                
+                // 1. Identificar produtos que JÁ estão no carrinho
+                $produtos_no_carrinho = [];
+                // Se houver resultados (o carrinho não está vazio)
+                if ($resultado->num_rows > 0) { 
+                    // Rebobinar o resultado para poder usar os dados novamente
+                    $resultado->data_seek(0); 
+                    while($item_carrinho = $resultado->fetch_assoc()) {
+                        $produtos_no_carrinho[] = $item_carrinho['produto_id'];
+                    }
+                }
+                
+                // Converte a lista de IDs em uma string para usar na consulta SQL (ex: 1, 5, 10)
+                $ids_para_excluir = !empty($produtos_no_carrinho) ? implode(',', $produtos_no_carrinho) : '0';
+                
+                // 2. Query para buscar produtos que NÃO estão no carrinho (máximo 4 sugestões)
+                $sql_sugestoes = "SELECT id, nome, descricao, preco, imagem_url 
+                                  FROM produtos 
+                                  WHERE id NOT IN ($ids_para_excluir) 
+                                  ORDER BY RAND() 
+                                  LIMIT 4";
+                                  
+                $resultado_sugestoes = $conn->query($sql_sugestoes);
+
+                if ($resultado_sugestoes->num_rows > 0) {
+                    while($sugestao = $resultado_sugestoes->fetch_assoc()) {
+                        ?>
+                        <div class="sugestao-card">
+                            <img src="../INICIO/imagens/<?php echo htmlspecialchars($sugestao['imagem_url']); ?>" alt="<?php echo htmlspecialchars($sugestao['nome']); ?>">
+                            <h4><?php echo htmlspecialchars($sugestao['nome']); ?></h4>
+                            <span class="price">R$ <?php echo number_format($sugestao['preco'], 2, ',', '.'); ?></span>
+                            
+                            <button class="btn-add-cart-sugestao" data-id="<?php echo $sugestao['id']; ?>">
+                                + Adicionar
+                            </button>
+                        </div>
+                        <?php
+                    }
+                } else {
+                    echo "<p>Não há mais produtos para sugerir. Que pena!</p>";
+                }
+                ?>
+            </div>
         </section>
     </main>
 
