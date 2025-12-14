@@ -175,3 +175,4 @@ window.addEventListener("scroll", () => {
         imagemHero.style.transform = `translateY(${rolagem * 0.3}px)`
     }
 })
+

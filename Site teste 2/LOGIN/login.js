@@ -1,81 +1,71 @@
-// Variáveis para alternar formulários
-const loginForm = document.getElementById('loginForm');
-const cadastroForm = document.getElementById('cadastroForm');
-const btnShowLogin = document.getElementById('btnShowLogin');
-const btnShowCadastro = document.getElementById('btnShowCadastro');
-const linkToLogin = document.getElementById('linkToLogin');
-const linkToCadastro = document.getElementById('linkToCadastro');
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Elementos do formulário
+    const loginForm = document.getElementById('loginForm');
+    const cadastroForm = document.getElementById('cadastroForm');
+    
+    // Links internos para alternar
+    const linkToCadastro = document.getElementById('linkToCadastro');
+    const linkToLogin = document.getElementById('linkToLogin');
+    
+    // Botões do cabeçalho
+    const btnShowLogin = document.getElementById('btnShowLogin');
+    const btnShowCadastro = document.getElementById('btnShowCadastro');
 
-// Função para alternar entre as abas
-function switchForm(formToShow) {
-    if (formToShow === 'login') {
+    // Funções de alternância
+    function showLoginForm() {
         loginForm.classList.add('active-form');
         cadastroForm.classList.remove('active-form');
-    } else {
+    }
+
+    function showCadastroForm() {
         cadastroForm.classList.add('active-form');
         loginForm.classList.remove('active-form');
     }
-}
 
-// Event Listeners para alternância
-btnShowLogin.addEventListener('click', () => switchForm('login'));
-btnShowCadastro.addEventListener('click', () => switchForm('cadastro'));
-linkToLogin.addEventListener('click', (e) => {
-    e.preventDefault();
-    switchForm('login');
-});
-linkToCadastro.addEventListener('click', (e) => {
-    e.preventDefault();
-    switchForm('cadastro');
-});
+    // =========================================================
+    // 1. LÓGICA DE INICIALIZAÇÃO (Leitura do Status do PHP)
+    // =========================================================
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
 
+    // Lista de status que devem manter o formulário de Cadastro ativo
+    if (status && (status.startsWith('cadastro_erro') && status !== 'cadastro_sucesso')) {
+        // Se houve erro (CPF, Senha, E-mail, Genérico), mostra o Cadastro
+        showCadastroForm();
+        
+    } else {
+        // Padrão (Sucesso no cadastro, Erro no login, Logout ou Sem status): mostra o Login
+        showLoginForm();
+    }
+    
+    // =========================================================
+    // 2. EVENT LISTENERS para alternância manual (clique)
+    // =========================================================
+    
+    // Links no cartão (Login <-> Cadastro)
+    if (linkToCadastro) {
+        linkToCadastro.addEventListener('click', function(e) {
+            e.preventDefault();
+            showCadastroForm();
+        });
+    }
 
-// FUNÇÕES DE VALIDAÇÃO E MÁSCARA (Frontend)
-// As máscaras ajudam a garantir que o formato de entrada está correto.
-
-// 1. Máscara Genérica para campos
-function mascara(o, f) {
-    v_obj = o
-    v_fun = f
-    setTimeout("execmascara()", 1)
-}
-function execmascara() {
-    v_obj.value = v_fun(v_obj.value)
-}
-
-// 2. Funções de Formatação (Máscaras)
-function mCEP(v) {
-    v = v.replace(/\D/g, "") // Remove tudo o que não é dígito
-    v = v.replace(/^(\d{5})(\d)/, "$1-$2") // Coloca hífen entre o 5º e o 6º dígito
-    return v
-}
-
-function mCPF(v) {
-    v = v.replace(/\D/g, "") // Remove tudo o que não é dígito
-    v = v.replace(/(\d{3})(\d)/, "$1.$2") // Coloca um ponto entre o 3º e o 4º dígitos
-    v = v.replace(/(\d{3})(\d)/, "$1.$2") // Coloca um ponto entre o 6º e o 7º dígitos
-    v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2") // Coloca um hífen entre o 9º e o 10º dígitos
-    return v
-}
-
-function mCelular(v) {
-    v = v.replace(/\D/g, ""); // Remove tudo o que não é dígito
-    v = v.replace(/^(\d{2})(\d)/g, "($1) $2"); // Coloca parênteses em volta dos dois primeiros dígitos
-    v = v.replace(/(\d)(\d{4})$/, "$1-$2"); // Coloca hífen entre o 4º e o 5º dígitos
-    return v;
-}
-
-// 3. Aplica as máscaras aos campos (Event Listeners)
-document.getElementById('cadastro_cep').addEventListener('input', function() {
-    mascara(this, mCEP);
+    if (linkToLogin) {
+        linkToLogin.addEventListener('click', function(e) {
+            e.preventDefault();
+            showLoginForm();
+        });
+    }
+    
+    // Botões no header
+    if (btnShowLogin) {
+        btnShowLogin.addEventListener('click', showLoginForm);
+    }
+    
+    if (btnShowCadastro) {
+        btnShowCadastro.addEventListener('click', showCadastroForm);
+    }
 });
 
-document.getElementById('cadastro_cpf').addEventListener('input', function() {
-    mascara(this, mCPF);
-});
-
-document.getElementById('cadastro_celular').addEventListener('input', function() {
-    mascara(this, mCelular);
-});
-
-// Nota: A validação final se o CPF/CEP/Email é VÁLIDO (não apenas bem formatado) deve ser feita no PHP (Backend)
+// PRECISA ARRUMAR A VALIDAÇÃO DE CPF QUE ESTÁ DANDO ERRADO

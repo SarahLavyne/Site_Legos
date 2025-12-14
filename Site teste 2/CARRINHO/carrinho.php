@@ -65,9 +65,6 @@ if ($resultado->num_rows > 0) {
             </div>
             
             <div class="header-actions">
-                <span class="user-greeting">
-                    Olá, <strong><?php echo htmlspecialchars($_SESSION['usuario_nome']); ?></strong>!
-                </span>
                 <a href="../INICIO/index.php" class="btn-primary">Produtos</a>
             </div>
         </div>

@@ -82,9 +82,19 @@ $produto = $result->fetch_assoc();
                     <p class="subtexto">Este item não está disponível para entrega residencial.</p>
                 </div>
 
-                <p class="estoque-status">Em Estoque.</p>
+                <?php if ($produto['estoque'] > 0): ?>
+                    <p class="estoque-status" style="color: #007600;">
+                        Em Estoque (<?php echo $produto['estoque']; ?> unidades).
+                    </p>
+                <?php else: ?>
+                    <p class="estoque-status" style="color: #b12704;">
+                        ❌ Esgotado temporariamente.
+                    </p>
+                <?php endif; ?>
 
                 <div class="acoes-compra">
+            <div class="acoes-compra">
+                <?php if ($produto['estoque'] > 0): ?>
                     <button class="btn-amazon-add btn-add-cart" data-id="<?php echo $produto['id']; ?>">
                         Adicionar ao carrinho
                     </button>
@@ -92,7 +102,12 @@ $produto = $result->fetch_assoc();
                     <button class="btn-amazon-buy btn-buy-now" data-id="<?php echo $produto['id']; ?>">
                         Comprar agora
                     </button>
-                </div>
+                <?php else: ?>
+                    <button disabled style="background-color: #ccc; border: 1px solid #999; cursor: not-allowed; padding: 10px; border-radius: 20px; width: 100%;">
+                        Indisponível
+                    </button>
+                <?php endif; ?>
+            </div>
                 
                 <p class="seguranca-texto">🔒 Transação Segura</p>
                 <p class="vendedor-info">Vendido por <strong>Brick-Up Oficial</strong></p>

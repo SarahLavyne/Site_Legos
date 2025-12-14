@@ -170,7 +170,75 @@ main.container h2 {
 .btn-checkout:hover {
     background-color: #2b78e4;
 }
+/* --- Seção de Sugestões de Itens --- */
 
+.sugestoes-section {
+    padding: 40px 0;
+    margin-top: 30px;
+    border-top: 1px solid #ddd;
+}
+
+.sugestoes-section .section-title {
+    font-size: 24px;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.sugestoes-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Alinha à esquerda */
+}
+
+.sugestao-card {
+    width: 180px; /* Largura fixa para mini-cards */
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    text-align: center;
+    background-color: #fcfcfc;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.sugestao-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.sugestao-card h4 {
+    font-size: 14px;
+    margin-bottom: 5px;
+    height: 35px; /* Altura fixa para alinhar os cards */
+    overflow: hidden;
+    color: #444;
+}
+
+.sugestao-card .price {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.btn-add-cart-sugestao {
+    background-color: #38b000; /* Verde de Ação */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.btn-add-cart-sugestao:hover {
+    background-color: #2f9400;
+}
 /* --- 6. Responsividade Básica (Opcional) --- */
 @media (max-width: 900px) {
     .carrinho-itens {

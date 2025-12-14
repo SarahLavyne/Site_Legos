@@ -228,6 +228,26 @@ body {
     box-shadow: 0 0 5px rgba(255, 71, 87, 0.5);
 }
 
+/* =================================================================
+   ESTILOS GLOBAIS DE MENSAGENS (Alertas no topo da página)
+   ================================================================= */
+.alerta-global {
+    padding: 15px 0;
+    text-align: center;
+    font-weight: 600;
+    /* Linha debaixo para destacar que é uma notificação */
+    border-bottom: 2px solid; 
+}
+
+.alerta-erro {
+    background-color: #f8d7da; /* Vermelho claro */
+    color: #721c24; /* Texto vermelho escuro (para contraste) */
+    border-color: #f5c6cb;
+    /* Aumenta a fonte e usa negrito para ser inconfundível */
+    font-size: 1.1rem; 
+    font-weight: 700;
+}
+/* ... (outras classes de alerta) ... */
 @media (max-width: 600px) {
     .auth-card {
         padding: 1.5rem;

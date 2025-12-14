@@ -18,12 +18,9 @@
             </div>
             <div class="header-actions">
                 <?php if (isset($_SESSION['usuario_id'])): ?>
-                    <span class="user-greeting">
-                        Olá, <strong><?php echo htmlspecialchars($_SESSION['usuario_nome']); ?></strong>!
-                    </span>
-                    <a href="../PERFIL/perfil.php" class="btn-secondary">Meu Perfil</a>
-                    <a href="../CARRINHO/carrinho.php" class="btn-primary">Carrinho</a>
-                    <a href="logout.php" class="btn-secondary">Sair</a>
+                    <a href="../CARRINHO/carrinho.php" class="btn-secondary">Carrinho</a>
+                    <a href="../PERFIL/perfil.php" class="btn-secondary">Perfil</a>
+                    <a href="logout.php" class="btn-primary">Sair</a>
                 <?php else: ?>
                     <a href="../LOGIN/login.php" class="btn-secondary">Entrar</a>
                 <?php endif; ?>
@@ -90,9 +87,7 @@
                                 <span class="price">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></span>
                                 
                                 <div class="card-buttons" style="display: flex; gap: 5px; flex-direction: column; width: 50%;">
-                                    <button class="btn-add-cart" data-id="<?php echo $produto['id']; ?>">Adicionar no carrinho</button>
-                                    <button class="btn-add-cart" data-id="<?php echo $produto['id']; ?>" style="background-color: #ffa41c; border:20px; padding: 10px; border-radius: 4px; cursor: pointer;">Comprar Agora</button>
-                                </div>
+                                    <button class="btn-add-cart" data-id="<?php echo $produto['id']; ?>">Adicionar no carrinho</button>                                </div>
                             </div>
                         </div>
                         <?php
