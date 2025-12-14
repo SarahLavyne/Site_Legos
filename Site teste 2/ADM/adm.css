@@ -1,0 +1,244 @@
+/* =================================================================
+   LAYOUT PRINCIPAL (Estilo Perfil/Admin)
+   ================================================================= */
+.perfil-layout {
+    display: flex;
+    gap: 30px;
+    padding-top: 30px;
+    padding-bottom: 50px;
+}
+
+/* =================================================================
+   MENU LATERAL (ASIDE)
+   ================================================================= */
+.perfil-menu {
+    flex: 0 0 250px; /* Largura fixa */
+    background-color: white; 
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); 
+    overflow: hidden; 
+    height: fit-content; /* Se ajusta ao conteúdo */
+}
+
+.perfil-menu .menu-header {
+    background-color: #f8f9fa; 
+    padding: 20px 25px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.perfil-menu .menu-header h3 {
+    font-size: 1.2rem;
+    color: #495057;
+    margin-bottom: 5px;
+}
+
+.perfil-menu .menu-header p {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.perfil-menu .menu-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+}
+
+.perfil-menu .menu-item {
+    padding: 12px 25px;
+    text-decoration: none;
+    color: #495057; 
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* Item ATIVO */
+.perfil-menu .menu-item.ativo {
+    background-color: #007bff; /* Fundo Azul */
+    color: white;
+    font-weight: bold;
+    border-left: 4px solid #ffc107; /* Linha de destaque amarela */
+}
+
+.perfil-menu .menu-item:hover:not(.ativo) {
+    background-color: #e9ecef; 
+}
+
+.perfil-menu .menu-item.deslogar {
+    color: #dc3545;
+    margin-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+/* =================================================================
+   CONTEÚDO PRINCIPAL (SECTION)
+   ================================================================= */
+.perfil-conteudo {
+    flex-grow: 1; 
+}
+
+.conteudo-card {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.perfil-conteudo h2 {
+    font-size: 1.8rem;
+    color: #343a40;
+    margin-top: 0;
+}
+
+.perfil-conteudo hr {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #dee2e6;
+}
+
+/* =================================================================
+   ESTILOS DE TABELAS E FORMULÁRIOS (Para o conteúdo interno)
+   ================================================================= */
+.conteudo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.tabela-admin {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.95rem;
+}
+
+.tabela-admin th, .tabela-admin td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.tabela-admin th {
+    background-color: #f1f1f1;
+    font-weight: 600;
+}
+
+.coluna-acoes a {
+    margin-right: 10px;
+}
+/* =================================================================
+   ESTILOS DE FORMULÁRIOS (Foco na Edição)
+   ================================================================= */
+.form-admin {
+    padding: 20px 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-admin label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.95rem;
+}
+
+.form-admin input[type="text"],
+.form-admin input[type="number"],
+.form-admin input[type="file"],
+.form-admin textarea,
+.form-admin select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box; 
+    transition: border-color 0.2s;
+}
+
+.form-admin input[type="text"]:focus,
+.form-admin textarea:focus,
+.form-admin select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-admin textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Para organizar Preço e Estoque lado a lado */
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0; /* Remove a margem do grupo interno */
+}
+
+
+/* Estilo específico para a Imagem Atual na Edição */
+.imagem-preview {
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 10px;
+    display: inline-block;
+    background-color: #f8f9fa;
+    margin-bottom: 10px;
+}
+
+.imagem-preview img {
+    display: block;
+    border-radius: 4px;
+}
+
+.form-admin small {
+    color: #6c757d;
+    font-size: 0.85rem;
+    display: block;
+    margin-top: 5px;
+}
+
+/* Estilo para o botão Salvar Alterações */
+.form-admin .btn-primary {
+    margin-top: 25px;
+    padding: 10px 25px;
+    font-size: 1rem;
+}
+/* =================================================================
+   ESTILOS PARA STATUS DE PEDIDOS
+   ================================================================= */
+.status-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    color: #fff; /* Texto branco padrão */
+}
+
+.status-pendente {
+    background-color: #ffc107; /* Amarelo/Aviso */
+    color: #343a40; /* Texto escuro para contraste */
+}
+.status-pago {
+    background-color: #17a2b8; /* Azul Claro/Info */
+}
+.status-enviado {
+    background-color: #28a745; /* Verde/Sucesso */
+}
+.status-entregue {
+    background-color: #007bff; /* Azul/Primário */
+}
+.status-cancelado {
+    background-color: #dc3545; /* Vermelho/Perigo */
+}

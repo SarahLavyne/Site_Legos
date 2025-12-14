@@ -2,20 +2,18 @@
 session_start();
 include '../conexao.php'; // Inclui a conexão com o banco de dados
 
-// 1. Verifica se o formulário foi enviado via POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // 2. Captura e limpeza dos dados
-    // O usuário pode inserir E-MAIL ou NOME DE USUÁRIO (se você usasse um)
     $usuario_input = $conn->real_escape_string(trim($_POST['usuario']));
-    $senha_input = $_POST['senha']; // Senha pura, será verificada com hash
+    $senha_input = $_POST['senha']; 
     
-    // 3. Busca o usuário no banco de dados usando o e-mail (ou o nome de usuário)
-    $sql = "SELECT id, nome, senha FROM usuarios WHERE email = '$usuario_input'";
+    // 3. Busca o usuário no banco de dados, INCLUINDO O CAMPO 'perfil'
+    $sql = "SELECT id, nome, senha, perfil FROM usuarios WHERE email = '$usuario_input' LIMIT 1";
     $resultado = $conn->query($sql);
 
     // 4. Verifica se o usuário foi encontrado
-    if ($resultado->num_rows == 1) {
+    if ($resultado && $resultado->num_rows == 1) {
         $usuario = $resultado->fetch_assoc();
         $hash_senha = $usuario['senha'];
 
@@ -24,30 +22,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             // Sucesso no Login!
             
-            // Inicia a sessão e armazena os dados importantes
+            // 6. Inicia a sessão e armazena os dados importantes, INCLUINDO O PERFIL
             $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['usuario_nome'] = $usuario['nome'];
+            $_SESSION['perfil'] = $usuario['perfil']; // Salva 'administrador' ou 'cliente'
             
-            // Fecha a conexão antes de redirecionar
             $conn->close();
             
-            // Redireciona para a página principal (INICIO)
-            header("Location: ../INICIO/index.php");
-            exit;
+            // 7. Redireciona com base no perfil (USANDO 'administrador')
+            if ($usuario['perfil'] === 'administrador') {
+                // Redireciona o administrador para o Painel
+                header("Location: ../ADM/index.php");
+                exit;
+            } else {
+                // Redireciona o cliente para a Loja
+                header("Location: ../INICIO/index.php");
+                exit;
+            }
             
         } else {
             // Falha na Senha
-            
             $conn->close();
-            // Redireciona de volta com status de erro
             header("Location: login.php?status=login_erro");
             exit;
         }
     } else {
         // Usuário não encontrado
-        
         $conn->close();
-        // Redireciona de volta com status de erro
         header("Location: login.php?status=login_erro");
         exit;
     }
@@ -56,7 +57,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: login.php");
     exit;
 }
-
-// O $conn->close() aqui fora é inalcançável e desnecessário, 
-// pois ele está fechado em todos os caminhos de sucesso/erro.
 ?>
