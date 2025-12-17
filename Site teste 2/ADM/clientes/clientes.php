@@ -1,7 +1,4 @@
 <?php
-// Este arquivo é incluído por ADM/adm.php. A variável $conn está disponível.
-
-// 1. Busca todos os usuários com perfil 'cliente'
 $sql_clientes = "SELECT id, nome, email, celular, cpf, data_cadastro FROM usuarios WHERE perfil = 'cliente' ORDER BY data_cadastro DESC";
 $resultado_clientes = $conn->query($sql_clientes);
 ?>

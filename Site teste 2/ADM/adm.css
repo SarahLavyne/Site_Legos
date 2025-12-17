@@ -213,32 +213,106 @@
     padding: 10px 25px;
     font-size: 1rem;
 }
-/* =================================================================
-   ESTILOS PARA STATUS DE PEDIDOS
-   ================================================================= */
-.status-tag {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 12px;
+/* --- Estilização Geral de Badges de Status --- */
+.badge-status {
+    padding: 6px 12px;
+    border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 600;
+    display: inline-block;
     text-align: center;
-    color: #fff; /* Texto branco padrão */
 }
 
-.status-pendente {
-    background-color: #ffc107; /* Amarelo/Aviso */
-    color: #343a40; /* Texto escuro para contraste */
+/* Cores por Status */
+.status-pendente { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+.status-pago { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.status-entregue { background-color: #cfe2ff; color: #084298; border: 1px solid #b6d4fe; }
+.status-cancelado { background-color: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
+
+/* --- Cartão de Pedido (Visão do Cliente) --- */
+.pedido-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    padding: 20px;
+    margin-bottom: 25px;
+    border-left: 5px solid #007bff;
+    transition: transform 0.2s;
 }
-.status-pago {
-    background-color: #17a2b8; /* Azul Claro/Info */
+
+.pedido-card:hover {
+    transform: scale(1.01);
 }
-.status-enviado {
-    background-color: #28a745; /* Verde/Sucesso */
+
+.pedido-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
 }
-.status-entregue {
-    background-color: #007bff; /* Azul/Primário */
+
+/* --- Box do Código de Retirada (Destaque) --- */
+.codigo-retirada-wrapper {
+    background: #f0f7ff;
+    border: 2px dashed #007bff;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    margin-top: 15px;
 }
-.status-cancelado {
-    background-color: #dc3545; /* Vermelho/Perigo */
+
+.codigo-retirada-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
 }
+
+.codigo-retirada-valor {
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #007bff;
+    letter-spacing: 3px;
+}
+
+/* --- Ajustes na Tabela Administrativa --- */
+.tabela-admin {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.tabela-admin th {
+    background-color: #343a40;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.tabela-admin td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.tabela-admin tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* --- Estilo para Alertas Globais --- */
+.alerta-global {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.alerta-erro { background-color: #f8d7da; color: #721c24; }
+.alerta-sucesso { background-color: #d4edda; color: #155724; }

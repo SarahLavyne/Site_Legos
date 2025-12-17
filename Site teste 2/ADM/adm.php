@@ -110,12 +110,9 @@ if (isset($_GET['status'])) {
                         break;
 
                     case 'vendas':
-                        // O arquivo está em ADM/vendas/vendas.php
-                        if (file_exists('vendas/vendas.php')) {
-                            include 'vendas/vendas.php'; 
-                        } else {
-                            echo '<h2>Vendas & Relatórios</h2><hr>';
-                            echo "<p>Crie o arquivo: ADM/vendas/vendas.php</p>";
+                        
+                        if (file_exists('relatorios/vendas.php')) {
+                            include 'relatorios/vendas.php'; 
                         }
                         break;
                         
