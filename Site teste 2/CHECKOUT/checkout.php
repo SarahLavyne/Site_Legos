@@ -82,10 +82,11 @@ $_SESSION['temp_codigo'] = $codigo_retirada;
                 </label>
             </div>
 
-            <div id="area-pix" class="pix-area">
-                <h4>Escaneie o QR Code</h4>
-                <div class="qr-code-simulado">
-                    [ QR CODE SIMULADO ]
+                <div id="area-pix" class="pix-area">
+                    <h4>Escaneie o QR Code</h4>
+                    <div class="qr-code-simulado">
+                        <img src="qr_code.jpg" alt="QR Code para Pagamento" style="width: 100%; height: auto; border-radius: 8px;">
+                    </div>
                 </div>
                 <p>Ou use o código Copia e Cola:</p>
                 <div class="copia-cola" id="pix-code">

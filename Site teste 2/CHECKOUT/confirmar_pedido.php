@@ -120,7 +120,7 @@ if ($conn->query($sql_pedido) === TRUE) {
         </div>
 
         <div style="margin-top: 35px; display: flex; gap: 15px; justify-content: center;">
-            <a href="../PERFIL/meus_pedidos.php" class="btn-secondary btn-confirmar" style="background: #edf2f7; color: #4a5568;">Meus Pedidos</a>
+            <a href="../PERFIL/perfil.php" class="btn-secondary btn-confirmar" style="background: #edf2f7; color: #4a5568;">Meus Pedidos</a>
             <a href="../INICIO/index.php" class="btn-primary btn-confirmar" style="background: #007bff; color: white;">Voltar à Loja</a>
         </div>
     </div>

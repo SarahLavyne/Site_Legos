@@ -10,7 +10,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $usuario_id = $_SESSION['usuario_id'];
 
-// 2. Busca os dados atuais do usuário (CORRIGIDO: usando 'celular' e SEM 'endereco')
+// 2. Busca os dados atuais do usuário
 $sql = "SELECT nome, email, cpf, celular, cep FROM usuarios WHERE id = '$usuario_id'";
 $resultado = $conn->query($sql);
 
@@ -21,13 +21,12 @@ if ($resultado->num_rows == 0) {
 
 $usuario = $resultado->fetch_assoc();
 
-// 3. Define a seção ativa: 'dados' por padrão ou outra seção
+// 3. Define a seção ativa
 $secao_ativa = 'dados';
 if (isset($_GET['secao'])) {
-    if ($_GET['secao'] == 'pedidos') {
-        $secao_ativa = 'pedidos';
-    } elseif ($_GET['secao'] == 'seguranca') {
-        $secao_ativa = 'seguranca';
+    $secoes_permitidas = ['pedidos', 'seguranca'];
+    if (in_array($_GET['secao'], $secoes_permitidas)) {
+        $secao_ativa = $_GET['secao'];
     }
 }
 ?>
@@ -40,95 +39,98 @@ if (isset($_GET['secao'])) {
     <title>Meu Perfil - Brick-Up</title>
     <link rel="stylesheet" href="../INICIO/styles.css"> 
     <link rel="stylesheet" href="perfil.css"> 
+    <style>
+        /* Estilos específicos para o Código de Retirada e Pedidos */
+        .vouche-retirada {
+            margin-top: 15px;
+            background: #f0f7ff;
+            border: 2px dashed #007bff;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 220px;
+        }
+        .vouche-retirada small {
+            display: block;
+            font-size: 0.7rem;
+            color: #007bff;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .codigo-texto {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #1e293b;
+            letter-spacing: 2px;
+        }
+        .pedido-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            border: 1px solid #edf2f7;
+        }
+        .pedido-info { flex: 1; min-width: 250px; }
+        .detalhes-itens { flex: 1.5; min-width: 300px; border-left: 1px solid #eee; padding-left: 20px; }
+        .item-linha { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #f8f9fa; }
+        .status-pendente { color: #d97706; font-weight: bold; }
+        .status-pago { color: #059669; font-weight: bold; }
+        .status-entregue { color: #2563eb; font-weight: bold; }
+    </style>
 </head>
 <body>
     <header class="header">
         <div class="container">
-            <div class="logo">
-                <h1>🧱 BRICK-UP</h1>
-            </div>
+            <div class="logo"><h1>🧱 BRICK-UP</h1></div>
             <div class="header-actions">                
-                <a href="../INICIO/index.php" class="btn-secondary">Inicio</a>
+                <a href="../INICIO/index.php" class="btn-secondary">Início</a>
                 <a href="../CARRINHO/carrinho.php" class="btn-primary">Carrinho</a>
             </div>
         </div>
     </header>
 
     <main class="perfil-layout">
-        
-        <?php
-        // 4. BLOCO DE MENSAGENS DE STATUS (Sucesso/Erro na atualização de Dados Pessoais)
-        if (isset($_GET['status'])) {
-            $status = $_GET['status'];
-            $mensagem = '';
-            $classe = '';
-
-            if ($status === 'sucesso') {
-                $mensagem = "Seus dados foram atualizados com sucesso!";
-                $classe = 'alerta-sucesso';
-            } elseif ($status === 'erro') {
-                $mensagem = "Erro ao atualizar dados. Por favor, tente novamente.";
-                $classe = 'alerta-erro';
-            }
-            
-            if ($mensagem) {
-                echo "<div class='alerta $classe'>$mensagem</div>";
-            }
-        }
-        ?>
-
         <div class="perfil-menu">
-            <h2>Bem-vindo, <?php echo htmlspecialchars($usuario['nome']); ?></h2>
+            <h2>Olá, <?php echo explode(' ', htmlspecialchars($usuario['nome']))[0]; ?>!</h2>
             <nav class="menu-nav">
                 <a href="perfil.php" class="menu-item <?php echo ($secao_ativa == 'dados' ? 'ativo' : ''); ?>">Dados Pessoais</a>
                 <a href="perfil.php?secao=pedidos" class="menu-item <?php echo ($secao_ativa == 'pedidos' ? 'ativo' : ''); ?>">Meus Pedidos</a> 
-                
-                <a href="perfil.php?secao=seguranca" class="menu-item <?php echo ($secao_ativa == 'seguranca' ? 'ativo' : ''); ?>">Segurança (Senha)</a> 
-                
-                <a href="../INICIO/logout.php" class="menu-item logout-link">Deslogar conta</a>
+                <a href="perfil.php?secao=seguranca" class="menu-item <?php echo ($secao_ativa == 'seguranca' ? 'ativo' : ''); ?>">Segurança</a> 
+                <a href="../INICIO/logout.php" class="menu-item logout-link">Sair da Conta</a>
             </nav>
         </div>
         
         <div class="perfil-conteudo">
             
             <?php if ($secao_ativa == 'dados'): ?>
-                
-                <h2>Dados Pessoais e CEP</h2>
-                
+                <h2>Seus Dados e Localização</h2>
                 <form action="processa_perfil.php" method="POST" class="form-perfil">
-                    
                     <div class="form-coluna">
-                        <h3 class="form-titulo">1. Seus Dados</h3>
-                        
-                        <label for="nome">Nome Completo:</label>
-                        <input type="text" id="nome" name="nome" value="<?php echo htmlspecialchars($usuario['nome']); ?>" required>
-                        
-                        <label for="email">E-mail:</label>
-                        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($usuario['email']); ?>" required>
-                        
-                        <label for="celular">Celular:</label>
-                        <input type="text" id="celular" name="celular" value="<?php echo htmlspecialchars($usuario['celular']); ?>">
-                        
-                        <label for="cpf">CPF (Não Editável):</label>
-                        <input type="text" id="cpf" value="<?php echo htmlspecialchars($usuario['cpf']); ?>" disabled> 
+                        <label>Nome Completo:</label>
+                        <input type="text" name="nome" value="<?php echo htmlspecialchars($usuario['nome']); ?>" required>
+                        <label>E-mail:</label>
+                        <input type="email" name="email" value="<?php echo htmlspecialchars($usuario['email']); ?>" required>
+                        <label>Celular:</label>
+                        <input type="text" name="celular" value="<?php echo htmlspecialchars($usuario['celular']); ?>">
                     </div>
-
                     <div class="form-coluna">
-                        <h3 class="form-titulo">2. CEP para Retirada</h3>
-
-                        <label for="cep">CEP:</label>
-                        <input type="text" id="cep" name="cep" value="<?php echo htmlspecialchars($usuario['cep']); ?>">
-                        
-                        <button type="submit" class="btn-primary btn-salvar" style="margin-top: 50px;">Salvar Alterações</button>
+                        <label>CEP:</label>
+                        <input type="text" name="cep" value="<?php echo htmlspecialchars($usuario['cep']); ?>">
+                        <button type="submit" class="btn-primary" style="margin-top: 20px;">Atualizar Dados</button>
                     </div>
                 </form>
 
             <?php elseif ($secao_ativa == 'pedidos'): ?>
-                
-                <h2>Histórico de Pedidos</h2>
-
+                <h2>Meu Histórico de Pedidos</h2>
                 <?php 
-                $sql_pedidos = "SELECT id, data_pedido, total, status FROM pedidos WHERE usuario_id = '$usuario_id' ORDER BY data_pedido DESC";
+                // Busca pedidos incluindo o código de retirada
+                $sql_pedidos = "SELECT id, data_pedido, total, status, codigo_retirada FROM pedidos WHERE usuario_id = '$usuario_id' ORDER BY data_pedido DESC";
                 $res_pedidos = $conn->query($sql_pedidos);
                 
                 if ($res_pedidos->num_rows > 0): 
@@ -136,28 +138,31 @@ if (isset($_GET['secao'])) {
                     <div class="historico-pedidos">
                         <?php while ($pedido = $res_pedidos->fetch_assoc()): ?>
                             <div class="pedido-card">
-                                
                                 <div class="pedido-info">
                                     <p><strong>Pedido #<?php echo $pedido['id']; ?></strong></p>
                                     <p>Data: <?php echo date('d/m/Y H:i', strtotime($pedido['data_pedido'])); ?></p>
-                                    <p class="status-<?php echo strtolower($pedido['status']); ?>">Status: <?php echo htmlspecialchars($pedido['status']); ?></p>
-                                    <p>Total: R$ <?php echo number_format($pedido['total'], 2, ',', '.'); ?></p>
+                                    <p>Status: <span class="status-<?php echo strtolower(explode(' ', $pedido['status'])[0]); ?>"><?php echo htmlspecialchars($pedido['status']); ?></span></p>
+                                    <p>Total: <strong>R$ <?php echo number_format($pedido['total'], 2, ',', '.'); ?></strong></p>
+                                    
+                                    <div class="vouche-retirada">
+                                        <small>Apresente na retirada:</small>
+                                        <span class="codigo-texto"><?php echo htmlspecialchars($pedido['codigo_retirada']); ?></span>
+                                    </div>
                                 </div>
                                 
                                 <div class="detalhes-itens">
+                                    <h4 style="margin-bottom: 10px; font-size: 0.9rem; color: #64748b;">Itens do Pedido:</h4>
                                     <?php
-                                    $sql_itens = "SELECT ip.quantidade, ip.preco_unitario, p.nome, p.imagem_url 
+                                    $sql_itens = "SELECT ip.quantidade, p.nome, p.imagem_url 
                                                   FROM itens_pedido ip
                                                   JOIN produtos p ON ip.produto_id = p.id
                                                   WHERE ip.pedido_id = " . $pedido['id'];
                                     $res_itens = $conn->query($sql_itens);
-                                    
                                     while ($item = $res_itens->fetch_assoc()):
                                     ?>
                                         <div class="item-linha">
-                                            <img src="../INICIO/imagens/<?php echo htmlspecialchars($item['imagem_url']); ?>" alt="<?php echo htmlspecialchars($item['nome']); ?>" width="40">
+                                            <img src="../INICIO/imagens/<?php echo htmlspecialchars($item['imagem_url']); ?>" width="35" style="border-radius: 4px;">
                                             <span><?php echo $item['quantidade']; ?>x <?php echo htmlspecialchars($item['nome']); ?></span>
-                                            <span class="preco-item">R$ <?php echo number_format($item['preco_unitario'], 2, ',', '.'); ?></span>
                                         </div>
                                     <?php endwhile; ?>
                                 </div>
@@ -165,53 +170,26 @@ if (isset($_GET['secao'])) {
                         <?php endwhile; ?>
                     </div>
                 <?php else: ?>
-                    <p class="aviso-vazio">Você ainda não realizou nenhum pedido. Que tal conferir nossos <a href="../INICIO/index.php">produtos</a>?</p>
+                    <div class="aviso-vazio">Você ainda não fez pedidos. <a href="../INICIO/index.php">Clique aqui</a> para ver os Legos!</div>
                 <?php endif; ?>
 
             <?php elseif ($secao_ativa == 'seguranca'): ?>
-                
-                <h2>Atualizar Senha</h2>
-                
-                <?php
-                // Exibição de mensagens de status (sucesso/erro da atualização de senha)
-                if (isset($_GET['status_senha'])) {
-                    $status_senha = $_GET['status_senha'];
-                    if ($status_senha === 'sucesso') {
-                        echo "<div class='alerta alerta-sucesso'>Senha atualizada com sucesso!</div>";
-                    } elseif ($status_senha === 'erro_antiga') {
-                        echo "<div class='alerta alerta-erro'>Erro: A senha antiga está incorreta.</div>";
-                    } elseif ($status_senha === 'erro_diferente') {
-                         echo "<div class='alerta alerta-erro'>Erro: A nova senha e a confirmação não coincidem.</div>";
-                    } else {
-                        echo "<div class='alerta alerta-erro'>Erro ao atualizar a senha. Tente novamente.</div>";
-                    }
-                }
-                ?>
-
-                <form action="processa_senha.php" method="POST" class="form-senha">
+                <h2>Alterar Senha de Acesso</h2>
+                <form action="processa_senha.php" method="POST" class="form-perfil">
                     <div class="form-coluna">
-                        
-                        <label for="senha_antiga">Senha Antiga:</label>
-                        <input type="password" id="senha_antiga" name="senha_antiga" required>
-                        
-                        <label for="senha_nova">Nova Senha:</label>
-                        <input type="password" id="senha_nova" name="senha_nova" required>
-                        
-                        <label for="senha_confirmar">Confirmar Nova Senha:</label>
-                        <input type="password" id="senha_confirmar" name="senha_confirmar" required>
-                        
-                        <button type="submit" class="btn-primary btn-salvar">Mudar Senha</button>
+                        <label>Senha Antiga:</label>
+                        <input type="password" name="senha_antiga" required>
+                        <label>Nova Senha:</label>
+                        <input type="password" name="senha_nova" required>
+                        <label>Confirmar Nova Senha:</label>
+                        <input type="password" name="senha_confirmar" required>
+                        <button type="submit" class="btn-primary">Atualizar Senha</button>
                     </div>
                 </form>
-
             <?php endif; ?>
 
         </div> 
     </main>
-
-    <footer class="footer">
-        </footer>
 </body>
 </html>
-
 <?php $conn->close(); ?>
