@@ -1,18 +1,39 @@
 <?php
-// Este arquivo é incluído por ADM/adm.php. A variável $conn está disponível.
-
-// Define a ação padrão (listar, ver_detalhes, editar_status)
-$acao_pedido = isset($_GET['acao']) ? $_GET['acao'] : 'listar';
-
-// Lógica de inclusão de sub-páginas
-if ($acao_pedido === 'ver_detalhes') {
-    // Iremos desenvolver os detalhes depois
-    echo "<h2>Detalhes do Pedido</h2><hr><p>Página de detalhes em desenvolvimento.</p>"; 
-} elseif ($acao_pedido === 'editar_status') {
-    // Iremos desenvolver a edição de status a seguir
-    include 'editar_status.php';
-} else {
-    // PADRÃO: Listar pedidos
-    include 'listar_pedidos.php'; 
-}
+// Consulta para buscar os pedidos
+$sql_pedidos = "SELECT p.*, u.nome FROM pedidos p JOIN usuarios u ON p.usuario_id = u.id ORDER BY p.data_pedido DESC";
+$resultado_pedidos = $conn->query($sql_pedidos);
 ?>
+
+<table class="tabela-admin">
+    <thead>
+        <tr>
+            <th>ID do Pedido</th>
+            <th>Cliente</th>
+            <th>Data</th>
+            <th>Total</th>
+            <th>Status</th> <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php while($ped = $resultado_pedidos->fetch_assoc()): ?>
+        <tr>
+            <td><?php echo $ped['id']; ?></td>
+            <td><?php echo htmlspecialchars($ped['nome']); ?></td>
+            <td><?php echo date('d/m/Y H:i', strtotime($ped['data_pedido'])); ?></td>
+            <td>R$ <?php echo number_format($ped['total'], 2, ',', '.'); ?></td>
+            
+            <td>
+                <span class="badge-status">
+                    <?php echo htmlspecialchars($ped['status'] ?: 'Pendente'); ?>
+                </span>
+            </td>
+
+            <td>
+                <a href="pedidos/editar_status.php?secao=pedidos&acao=editar_status&id=<?php echo $ped['id']; ?>" class="btn-editar">
+                    Editar Status
+                </a>
+            </td>
+        </tr>
+        <?php endwhile; ?>
+    </tbody>
+</table>

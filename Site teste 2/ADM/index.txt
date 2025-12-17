@@ -1,4 +1,4 @@
-<?php
+ <?php
 session_start();
 // Caminho de conexão corrigido: sobe um nível (..) para encontrar o arquivo na raiz
 include '../conexao.php'; 

@@ -1,4 +1,4 @@
-<form action="ADM/processa_adm.php" method="POST" enctype="multipart/form-data" class="form-admin">
+<form action="processa_adm.php" method="POST" enctype="multipart/form-data" class="form-admin">
     <input type="hidden" name="acao" value="adicionar_produto">
 
     <div class="form-group">
@@ -37,7 +37,14 @@
         <input type="file" id="imagem" name="imagem" accept="image/*" required>
     </div>
 
-    <button type="submit" class="btn-primary" style="margin-top: 20px;">
-        Salvar Novo Produto
-    </button>
+        <div class="form-group">
+                <label for="destaque">Produto em Destaque:</label>
+                <input type="checkbox" id="destaque" name="destaque" value="1" style="width: auto;">
+                <small style="display: block; color: #6c757d;">Marque se este produto deve aparecer na página inicial da loja.</small>
+            </div>
+
+            <button type="submit" class="btn-primary" style="margin-top: 20px;">
+                Salvar Novo Produto
+            </button>
+        </form>
 </form> 

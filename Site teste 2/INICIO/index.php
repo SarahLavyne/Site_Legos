@@ -1,5 +1,5 @@
 <?php 
-    session_start(); // 1. ESSENCIAL: Inicia a sessão UMA ÚNICA VEZ
+    session_start();
     include '../conexao.php'; 
 ?>
 <!DOCTYPE html>
@@ -18,6 +18,11 @@
             </div>
             <div class="header-actions">
                 <?php if (isset($_SESSION['usuario_id'])): ?>
+                    
+                    <?php if (isset($_SESSION['perfil']) && $_SESSION['perfil'] === 'administrador'): ?>
+                        <a href="../ADM/adm.php" class="btn-primary">Painel ADM</a>
+                    <?php endif; ?>
+                    
                     <a href="../CARRINHO/carrinho.php" class="btn-secondary">Carrinho</a>
                     <a href="../PERFIL/perfil.php" class="btn-secondary">Perfil</a>
                     <a href="logout.php" class="btn-primary">Sair</a>
@@ -34,69 +39,53 @@
                 <h2>Construa Seus Sonhos com LEGO</h2>
                 <p>Descubra milhares de sets e peças para dar vida à sua imaginação. Da criança ao adulto colecionador!</p>
                 <div class="hero-buttons">
-                    <button class="btn-primary btn-large">Explorar Produtos</button>
-                    <button class="btn-secondary btn-large">Ver Lançamentos</button>
+                    <a href="explorar.php" class="btn-primary btn-large">Explorar Produtos</a>
+                    <a href="#produtos" class="btn-secondary btn-large">Ver Destaques</a>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="filtros-section">
-        <div class="container">
-            <div class="filtros-container">
-                <div class="filtros-categorias">
-                    <button class="filtro-btn ativo" data-categoria="todos">Todos</button>
-                    <button class="filtro-btn" data-categoria="carros">Carros</button>
-                    <button class="filtro-btn" data-categoria="personagens">Personagens</button>
-                    <button class="filtro-btn" data-categoria="construcoes">Construções</button>
-                </div>
-                <button class="ordenar-preco" id="btnOrdenarPreco">
-                    <span>Preço</span>
-                    <span class="setas">⇅</span>
-                </button>
             </div>
         </div>
     </section>
 
     <section id="produtos" class="products-section">
         <div class="container">
-            <h2 class="section-title">Produtos em Destaque</h2>
-            <div class="products-grid" id="gridProdutos">
+            <h2 class="section-title">🔥 Produtos em Destaque</h2>
+            <div class="products-grid">
                 <?php 
-                $sql = "SELECT id, nome, descricao, preco, categoria, imagem_url FROM produtos ORDER BY id DESC";
+                // Busca apenas produtos marcados como destaque no banco de dados
+                $sql = "SELECT id, nome, preco, imagem_url FROM produtos WHERE destaque = 1 ORDER BY id DESC";
                 $resultado = $conn->query($sql);
 
-                if ($resultado->num_rows > 0) {
+                if ($resultado && $resultado->num_rows > 0) {
                     while($produto = $resultado->fetch_assoc()) {
                         ?>
-                        <div class="product-card" data-categoria="<?php echo htmlspecialchars($produto['categoria']); ?>" data-preco="<?php echo htmlspecialchars($produto['preco']); ?>">
-                            
+                        <div class="product-card">
                             <a href="detalhes.php?id=<?php echo $produto['id']; ?>">
-                                <img src="imagens/<?php echo htmlspecialchars($produto['imagem_url']); ?>" height="250" width="250" alt="<?php echo htmlspecialchars($produto['nome']); ?>">
+                                <img src="imagens/<?php echo htmlspecialchars($produto['imagem_url']); ?>" alt="<?php echo htmlspecialchars($produto['nome']); ?>">
                             </a>
 
-                            <h3>
-                                <a href="detalhes.php?id=<?php echo $produto['id']; ?>" style="text-decoration: none; color: inherit;">
-                                    <?php echo htmlspecialchars($produto['nome']); ?>
-                                </a>
-                            </h3>
+                            <div class="product-info">
+                                <h3>
+                                    <a href="detalhes.php?id=<?php echo $produto['id']; ?>" style="text-decoration: none; color: inherit;">
+                                        <?php echo htmlspecialchars($produto['nome']); ?>
+                                    </a>
+                                </h3>
 
-                            <p class="product-description"><?php echo htmlspecialchars($produto['descricao']); ?></p>
-                            
-                            <div class="product-footer">
-                                <span class="price">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></span>
-                                
-                                <div class="card-buttons" style="display: flex; gap: 5px; flex-direction: column; width: 50%;">
-                                    <button class="btn-add-cart" data-id="<?php echo $produto['id']; ?>">Adicionar no carrinho</button>                                </div>
+                                <div class="product-footer">
+                                    <span class="price">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></span>
+                                    <a href="detalhes.php?id=<?php echo $produto['id']; ?>" class="btn-primary">Ver Detalhes</a>
+                                </div>
                             </div>
                         </div>
                         <?php
                     }
                 } else {
-                    echo "<p>Nenhum produto encontrado na loja.</p>";
+                    echo "<p class='alerta-aviso'>Nenhum produto em destaque no momento. Confira nossa aba de explorar!</p>";
                 }
-                $conn->close();
                 ?>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="explorar.php" class="btn-secondary btn-large">Ver Todos os Produtos →</a>
             </div>
         </div>
     </section>
@@ -110,22 +99,19 @@
                 </div>
                 <div class="footer-section">
                     <h4>Links Rápidos</h4>
-                    <a href="#produtos">Produtos</a>
-                    <a href="#categorias">Categorias</a>
-                    <a href="#sobre">Sobre Nós</a>
-                    <a href="#contato">Contato</a>
+                    <a href="explorar.php">Explorar Produtos</a>
+                    <a href="sobre_nos.php">Sobre Nós</a>
                 </div>
                 <div class="footer-section">
                     <h4>Atendimento</h4>
-                    <a href="#">FAQ</a>
-                    <a href="#">Política de Troca</a>
-                    <a href="#">Entrega</a>
-                    <a href="#">Pagamento</a>
+                    <a href="faq.php">FAQ</a>
+                    <a href="politica_troca.php">Política de Troca</a>
+                    <a href="entrega_pagamento.php">Entrega/Pagamento</a>
                 </div>
                 <div class="footer-section">
                     <h4>Contato</h4>
-                    <p>contato@brickup.com.br</p>
-                    <p>(11) 1234-5678</p>
+                    <p>brickup@gmail.com</p>
+                    <p>(68) 99923-7313</p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -137,3 +123,6 @@
     <script src="script.js"></script>
 </body>
 </html>
+<?php 
+    $conn->close(); 
+?>

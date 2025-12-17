@@ -36,7 +36,7 @@ $resultado_clientes = $conn->query($sql_clientes);
                 <td><?php echo htmlspecialchars($cliente['cpf']); ?></td>
                 <td><?php echo date('d/m/Y', strtotime($cliente['data_cadastro'])); ?></td>
                 <td class="coluna-acoes">
-                    <a href="../processa_adm.php?acao=apagar_cliente&id=<?php echo $cliente['id']; ?>" 
+                    <a href="/processa_adm.php?acao=apagar_cliente&id=<?php echo $cliente['id']; ?>" 
                        class="btn-apagar" 
                        onclick="return confirm('ATENÇÃO: Tem certeza que deseja APAGAR o cliente <?php echo htmlspecialchars($cliente['nome']); ?>? Esta ação é irreversível.');">
                         Apagar

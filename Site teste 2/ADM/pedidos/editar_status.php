@@ -9,16 +9,17 @@ if ($pedido_id == 0) {
     return;
 }
 
-// 1. Busca os dados atuais do pedido e o nome do cliente
+// 1. Busca os dados atuais do pedido. 
+// CORREÇÃO: Alterado u.usuario_nome para u.nome conforme o erro da imagem
 $sql_pedido = "
-    SELECT p.id, p.total, p.status, u.nome AS nome_cliente
+    SELECT p.id, p.total, p.status, p.codigo_retirada, u.nome AS nome_cliente
     FROM pedidos p
     JOIN usuarios u ON p.usuario_id = u.id
     WHERE p.id = $pedido_id
 ";
 $resultado = $conn->query($sql_pedido);
 
-if ($resultado->num_rows === 0) {
+if (!$resultado || $resultado->num_rows === 0) {
     echo '<div class="alerta-global alerta-erro">Pedido não encontrado.</div>';
     echo '<a href="adm.php?secao=pedidos" class="btn-secondary">Voltar</a>';
     return;
@@ -26,18 +27,21 @@ if ($resultado->num_rows === 0) {
 
 $pedido = $resultado->fetch_assoc();
 
-// Lista de status disponíveis para seleção
+// 2. Lista de status disponíveis (Chaves devem bater exatamente com o que está no banco)
 $status_opcoes = [
-    'pendente' => 'Pagamento Pendente',
-    'pago' => 'Pago e Processando',
-    'enviado' => 'Enviado',
-    'entregue' => 'Entregue',
-    'cancelado' => 'Cancelado'
+    'Pendente' => 'Aguardando Pagamento na Loja',
+    'Pago (Aguardando Retirada)' => 'Pago - Pronto para Retirada',
+    'Entregue' => 'Entregue / Finalizado',
+    'Cancelado' => 'Cancelado'
 ];
 ?>
 
 <h3>Alterar Status do Pedido #<?php echo $pedido['id']; ?></h3>
-<p>Cliente: <strong><?php echo htmlspecialchars($pedido['nome_cliente']); ?></strong> | Total: <strong>R$ <?php echo number_format($pedido['total'], 2, ',', '.'); ?></strong></p>
+<p>
+    Cliente: <strong><?php echo htmlspecialchars($pedido['nome_cliente']); ?></strong> | 
+    Total: <strong>R$ <?php echo number_format($pedido['total'], 2, ',', '.'); ?></strong>
+</p>
+<p>Código de Retirada: <strong style="color: #007bff;"><?php echo $pedido['codigo_retirada']; ?></strong></p>
 
 <hr>
 
@@ -54,11 +58,23 @@ $status_opcoes = [
                     <?php echo $label; ?>
                 </option>
             <?php endforeach; ?>
+            
+            <?php 
+            // CORREÇÃO: Se o status atual não estiver no array, exibe ele para evitar o erro de "Undefined array key"
+            if (!array_key_exists($pedido['status'], $status_opcoes) && !empty($pedido['status'])): ?>
+                <option value="<?php echo htmlspecialchars($pedido['status']); ?>" selected>
+                    <?php echo htmlspecialchars($pedido['status']); ?> (Atual)
+                </option>
+            <?php endif; ?>
         </select>
-        <small style="margin-top: 10px;">Status atual: **<?php echo htmlspecialchars($status_opcoes[$pedido['status']]); ?>**</small>
+
+        <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 4px;">
+            Status atual: <strong><?php echo htmlspecialchars($pedido['status'] ?: 'Não definido'); ?></strong>
+        </div>
     </div>
 
     <button type="submit" class="btn-primary" style="margin-top: 25px;">
-        <i class="fas fa-save"></i> Salvar Novo Status
+        Salvar Novo Status
     </button>
-</form>
+    <a href="../adm.php?secao=pedidos" class="btn-secondary">Cancelar</a>
+</form> 

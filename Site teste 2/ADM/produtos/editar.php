@@ -25,7 +25,7 @@ $produto = $resultado->fetch_assoc();
 $categorias = ["Carro", "Construção", "Personagens"];
 ?>
 
-<form action="ADM/processa_adm.php" method="POST" enctype="multipart/form-data" class="form-admin">
+<form action="processa_adm.php" method="POST" enctype="multipart/form-data" class="form-admin">
     <input type="hidden" name="acao" value="editar_produto">
     <input type="hidden" name="id" value="<?php echo $produto['id']; ?>">
 
@@ -78,7 +78,14 @@ $categorias = ["Carro", "Construção", "Personagens"];
         <small style="color: #6c757d;">Deixe em branco para manter a imagem atual.</small>
     </div>
 
-    <button type="submit" class="btn-primary" style="margin-top: 20px;">
-        Salvar Alterações
-    </button>
+    <div class="form-group">
+            <label for="destaque">Produto em Destaque:</label>
+            <input type="checkbox" id="destaque" name="destaque" value="1" style="width: auto;">
+            <small style="display: block; color: #6c757d;">Marque se este produto deve aparecer na página inicial da loja.</small>
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top: 20px;">
+            Salvar Novo Produto
+        </button>
+    </form>
 </form>

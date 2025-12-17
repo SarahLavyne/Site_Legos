@@ -52,7 +52,7 @@ $resultado_produtos = $conn->query($sql_produtos);
                         Editar
                     </a>
                     
-                    <a href="../processa_adm.php?acao=apagar_produto&id=<?php echo $produto['id']; ?>" 
+                    <a href="processa_adm.php?acao=apagar_produto&id=<?php echo $produto['id']; ?>" 
                        class="btn-apagar" 
                        onclick="return confirm('Tem certeza que deseja apagar o produto <?php echo htmlspecialchars($produto['nome']); ?>?');">
                         Apagar

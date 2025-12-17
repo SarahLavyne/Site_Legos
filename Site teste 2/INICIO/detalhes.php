@@ -39,9 +39,8 @@ $produto = $result->fetch_assoc();
             </div>
             <div class="header-actions">
                 <?php if (isset($_SESSION['usuario_id'])): ?>
-                    <span class="user-greeting">Olá, <strong><?php echo htmlspecialchars($_SESSION['usuario_nome']); ?></strong>!</span>
                     <a href="../CARRINHO/carrinho.php" class="btn-secondary">Carrinho</a>
-                    <a href="index.php" class="btn-primary">produtos</a>
+                    <a href="explorar.php" class="btn-primary">produtos</a>
                 <?php else: ?>
                     <a href="../LOGIN/login.php" class="btn-secondary">Login</a>
                     <a href="../CADASTRO/cadastro.php" class="btn-primary">Cadastre-se</a>

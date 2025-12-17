@@ -52,6 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $preco = floatval($_POST['preco']);
         $estoque = intval($_POST['estoque']);
         $produto_id = isset($_POST['id']) ? intval($_POST['id']) : 0; 
+        $destaque = isset($_POST['destaque']) ? 1 : 0;
     }
 
     // AÇÃO 2.1: ADICIONAR NOVO PRODUTO (CREATE)
@@ -65,9 +66,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $imagem_nome = $upload_resultado['nome'];
 
-        $sql_inserir = "INSERT INTO produtos (nome, descricao, preco, categoria, estoque, imagem_url, data_cadastro) 
-                        VALUES ('$nome', '$descricao', '$preco', '$categoria', '$estoque', '$imagem_nome', NOW())";
-
+        $sql_inserir = "INSERT INTO produtos (nome, descricao, preco, categoria, estoque, imagem_url, data_cadastro, destaque) 
+            VALUES ('$nome', '$descricao', '$preco', '$categoria', '$estoque', '$imagem_nome', NOW(), '$destaque')";
         if ($conn->query($sql_inserir) === TRUE) {
             header("Location: adm.php?secao=produtos&status=sucesso");
             exit;
@@ -94,14 +94,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        $sql_editar = "UPDATE produtos SET 
-                        nome = '$nome', 
-                        descricao = '$descricao', 
-                        categoria = '$categoria', 
-                        preco = '$preco', 
-                        estoque = '$estoque', 
-                        imagem_url = '$imagem_nome' 
-                       WHERE id = $produto_id";
+                $sql_editar = "UPDATE produtos SET 
+                      nome = '$nome', 
+                      descricao = '$descricao', 
+                      categoria = '$categoria', 
+                      preco = '$preco', 
+                      estoque = '$estoque', 
+                      imagem_url = '$imagem_nome',
+                      destaque = '$destaque' 
+                      WHERE id = $produto_id";
 
         if ($conn->query($sql_editar) === TRUE) {
             header("Location: adm.php?secao=produtos&status=sucesso");

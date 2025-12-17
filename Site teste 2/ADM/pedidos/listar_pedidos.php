@@ -58,11 +58,7 @@ $resultado_pedidos = $conn->query($sql_pedidos);
                     </span>
                 </td>
                 <td class="coluna-acoes">
-                    <a href="adm.php?secao=pedidos&acao=ver_detalhes&id=<?php echo $pedido['id']; ?>" class="btn-detalhes">
-                        Detalhes
-                    </a>
-                    
-                    <a href="adm.php?secao=pedidos&acao=editar_status&id=<?php echo $pedido['id']; ?>" class="btn-editar">
+                   <a href="adm.php?secao=pedidos&acao=editar_status&id=<?php echo $pedido['id']; ?>" class="btn-editar">
                         Editar Status
                     </a>
                 </td>
