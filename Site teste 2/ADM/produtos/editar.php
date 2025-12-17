@@ -1,5 +1,4 @@
 <?php
-// Este arquivo é incluído por ADMIN/produtos/produtos.php
 
 $produto_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -9,7 +8,6 @@ if ($produto_id == 0) {
     return; // Para o processamento
 }
 
-// 1. Busca os dados atuais do produto
 $sql_produto = "SELECT * FROM produtos WHERE id = $produto_id";
 $resultado = $conn->query($sql_produto);
 
@@ -21,7 +19,6 @@ if ($resultado->num_rows === 0) {
 
 $produto = $resultado->fetch_assoc();
 
-// Categorias disponíveis (deve ser o mesmo array do adicionar.php)
 $categorias = ["Carro", "Construção", "Personagens"];
 ?>
 

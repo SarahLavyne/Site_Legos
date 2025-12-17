@@ -73,7 +73,6 @@ main.container h2 {
 
 
 
-/* Botão Remover (X) */
 .btn-remover {
     background: none;
     color: #a00;
@@ -94,10 +93,9 @@ main.container h2 {
     background-color: #fdd;
 }
 
-/* --- 5. Resumo da Compra (Lateral) --- */
 
 .carrinho-resumo {
-    width: 30%; /* Ocupa cerca de 30% da largura */
+    width: 30%; 
     min-width: 250px; 
     max-width: 350px;
     background-color: #fff;
@@ -106,10 +104,9 @@ main.container h2 {
 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     
-    /* Faz o resumo "grudar" no topo ao rolar */
     position: sticky; 
     top: 20px; 
-    height: fit-content; /* Ajusta a altura ao conteúdo */
+    height: fit-content;
 }
 
 .carrinho-resumo h3 {
@@ -120,11 +117,11 @@ main.container h2 {
     margin-bottom: 15px;
     font-weight: normal;
     display: flex;
-    justify-content: space-between; /* Espaça o texto do valor */
+    justify-content: space-between; 
 }
 
 .carrinho-resumo h3 strong {
-    color: #007bff; /* Cor de destaque para o valor total */
+    color: #007bff; 
     font-weight: bold;
 }
 
@@ -135,8 +132,8 @@ main.container h2 {
     padding: 12px;
     font-size: 18px;
     text-align: center;
-    background-color: #3483fa; /* Azul forte, inspirado no ML */
-    color: white !important; /* Força a cor branca */
+    background-color: #3483fa; 
+    color: white !important; 
     border-radius: 6px;
     margin-top: 20px;
     text-decoration: none;
@@ -218,13 +215,13 @@ main.container h2 {
 /* --- 6. Responsividade Básica (Opcional) --- */
 @media (max-width: 900px) {
     .carrinho-itens {
-        flex-direction: column; /* Empilha itens e resumo em telas menores */
+        flex-direction: column; 
     }
 
     .carrinho-resumo {
         width: 100%;
         max-width: none;
-        position: static; /* Remove o sticky em telas pequenas */
+        position: static; 
     }
 }
 

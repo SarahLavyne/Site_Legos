@@ -1,5 +1,4 @@
 <?php
-// Consulta para buscar os pedidos
 $sql_pedidos = "SELECT p.*, u.nome FROM pedidos p JOIN usuarios u ON p.usuario_id = u.id ORDER BY p.data_pedido DESC";
 $resultado_pedidos = $conn->query($sql_pedidos);
 ?>

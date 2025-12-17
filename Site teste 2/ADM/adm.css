@@ -1,6 +1,3 @@
-/* =================================================================
-   LAYOUT PRINCIPAL (Estilo Perfil/Admin)
-   ================================================================= */
 .perfil-layout {
     display: flex;
     gap: 30px;
@@ -8,9 +5,6 @@
     padding-bottom: 50px;
 }
 
-/* =================================================================
-   MENU LATERAL (ASIDE)
-   ================================================================= */
 .perfil-menu {
     flex: 0 0 250px; /* Largura fixa */
     background-color: white; 
@@ -51,7 +45,6 @@
     transition: background-color 0.2s, color 0.2s;
 }
 
-/* Item ATIVO */
 .perfil-menu .menu-item.ativo {
     background-color: #007bff; /* Fundo Azul */
     color: white;
@@ -69,9 +62,6 @@
     border-top: 1px solid #eee;
 }
 
-/* =================================================================
-   CONTEÚDO PRINCIPAL (SECTION)
-   ================================================================= */
 .perfil-conteudo {
     flex-grow: 1; 
 }
@@ -96,9 +86,6 @@
     border-top: 1px solid #dee2e6;
 }
 
-/* =================================================================
-   ESTILOS DE TABELAS E FORMULÁRIOS (Para o conteúdo interno)
-   ================================================================= */
 .conteudo-header {
     display: flex;
     justify-content: space-between;
@@ -127,9 +114,6 @@
 .coluna-acoes a {
     margin-right: 10px;
 }
-/* =================================================================
-   ESTILOS DE FORMULÁRIOS (Foco na Edição)
-   ================================================================= */
 .form-admin {
     padding: 20px 0;
 }

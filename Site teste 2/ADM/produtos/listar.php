@@ -1,9 +1,4 @@
 <?php
-// Este arquivo é incluído por ADM/produtos/produtos.php, que por sua vez
-// é incluído por ADM/adm.php. A variável $conn está disponível aqui.
-
-// 1. Lógica para buscar os produtos no banco de dados
-// Busca todos os campos necessários, incluindo 'categoria'
 $sql_produtos = "SELECT id, nome, preco, categoria, estoque, imagem_url FROM produtos ORDER BY id DESC";
 $resultado_produtos = $conn->query($sql_produtos);
 ?>
@@ -36,7 +31,6 @@ $resultado_produtos = $conn->query($sql_produtos);
                 <td>R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></td>
                 <td>
                     <?php 
-                        // Lógica para destacar estoque baixo
                         $estoque_classe = '';
                         if ($produto['estoque'] == 0) {
                             $estoque_classe = 'text-erro';

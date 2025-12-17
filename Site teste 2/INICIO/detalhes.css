@@ -1,24 +1,20 @@
-/* Layout Geral de 3 Colunas (Responsivo) */
 .detalhes-container {
     display: grid;
-    grid-template-columns: 35% 40% 25%; /* Proporções estilo Amazon */
-    gap: 30px;
+    grid-template-columns: 35% 40% 25%; 
     padding-top: 40px;
     padding-bottom: 60px;
     align-items: start;
 }
 
-/* Coluna 1: Imagem */
 .detalhes-imagem img {
     width: 100%;
     max-height: 500px;
     object-fit: contain;
     border-radius: 8px;
-    position: sticky; /* Mantém a imagem visível ao rolar */
+    position: sticky; 
     top: 20px;
 }
 
-/* Coluna 2: Info */
 .produto-titulo {
     font-size: 24px;
     color: #333;
@@ -40,7 +36,7 @@
 
 .preco-destaque {
     font-size: 28px;
-    color: #333; /* Ou vermelho #cc0c39 para oferta */
+    color: #333; 
     font-weight: 500;
 }
 
@@ -62,7 +58,6 @@
     color: #333;
 }
 
-/* Coluna 3: Buy Box (A caixa da direita) */
 .buy-box {
     border: 1px solid #d5d9d9;
     border-radius: 8px;
@@ -73,14 +68,14 @@
 
 .buy-box .preco-total {
     font-size: 22px;
-    color: #b12704; /* Vermelho escuro estilo Amazon */
+    color: #b12704; 
     font-weight: bold;
     margin-bottom: 15px;
 }
 
-/* Aviso de Retirada */
+
 .aviso-retirada {
-    background-color: #fff3cd; /* Amarelo clarinho alerta */
+    background-color: #fff3cd; 
     border: 1px solid #ffeeba;
     padding: 10px;
     border-radius: 4px;
@@ -100,7 +95,7 @@
 }
 
 .estoque-status {
-    color: #007600; /* Verde Amazon */
+    color: #007600; 
     font-size: 18px;
     margin-bottom: 20px;
 }
@@ -123,7 +118,6 @@
     transition: background 0.2s;
 }
 
-/* Botão Amarelo (Adicionar ao Carrinho) */
 .btn-amazon-add {
     background-color: #ffd814;
     border-color: #fcd200;
@@ -133,7 +127,6 @@
     background-color: #f7ca00;
 }
 
-/* Botão Laranja (Comprar Agora) */
 .btn-amazon-buy {
     background-color: #ffa41c;
     border-color: #ff8f00;
@@ -152,7 +145,7 @@
 /* Responsividade para Celular */
 @media (max-width: 900px) {
     .detalhes-container {
-        grid-template-columns: 1fr; /* Tudo em uma coluna */
+        grid-template-columns: 1fr; 
     }
     
     .detalhes-imagem img {

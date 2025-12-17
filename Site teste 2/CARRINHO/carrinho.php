@@ -2,7 +2,6 @@
 session_start();
 include '../conexao.php'; 
 
-// 1. Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
     header("Location: ../LOGIN/login.php");
     exit;
@@ -10,7 +9,6 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $usuario_id = $_SESSION['usuario_id'];
 
-// 2. Consulta itens do carrinho
 $sql = "SELECT c.id AS carrinho_id, c.quantidade, 
                p.nome, p.preco, p.imagem_url, p.id AS produto_id
         FROM carrinho c
@@ -146,7 +144,6 @@ if ($resultado->num_rows > 0) {
     </main>
 
     <script>
-        // Função para atualizar o total na tela
         function atualizarTotal() {
             let total = 0;
             document.querySelectorAll('.check-item:checked').forEach(checkbox => {
@@ -157,19 +154,16 @@ if ($resultado->num_rows > 0) {
             document.getElementById('total-selecionado').innerText = total.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'});
         }
 
-        // Evento para checkboxes
         document.querySelectorAll('.check-item').forEach(el => {
             el.addEventListener('change', atualizarTotal);
         });
 
-        // Função para acionar o form de remoção
         function removerItem(id) {
             if(confirm('Remover este item do carrinho?')) {
                 document.getElementById('form-remover-' + id).submit();
             }
         }
 
-        // Inicializa o total ao carregar
         atualizarTotal();
     </script>
 </body>

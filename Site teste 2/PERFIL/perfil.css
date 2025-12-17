@@ -1,7 +1,3 @@
-/* =================================================================
-   ESTILO DA PÁGINA DE PERFIL (Painel de Controle)
-   ================================================================= */
-
 main.perfil-layout {
     display: flex;
     max-width: 1200px;
@@ -12,9 +8,9 @@ main.perfil-layout {
     min-height: 70vh;
 }
 
-/* --- Menu Lateral (Estilo Amazon/Dashboard) --- */
+/* --- Menu Lateral --- */
 .perfil-menu {
-    flex-basis: 280px; /* Largura fixa para o menu */
+    flex-basis: 280px;
     background: #f7f7f7;
     padding: 30px 20px;
     border-right: 1px solid #eee;
@@ -24,7 +20,7 @@ main.perfil-layout {
 
 .perfil-menu h2 {
     font-size: 1.5rem;
-    color: #007bff; /* Azul primário */
+    color: #007bff;
     margin-bottom: 30px;
     padding-bottom: 10px;
     border-bottom: 1px solid #ddd;
@@ -51,14 +47,14 @@ main.perfil-layout {
 }
 
 .menu-item.ativo {
-    background-color: #007bff; /* Cor primária ativa */
+    background-color: #007bff; 
     color: white;
     font-weight: 700;
 }
 
 .logout-link {
     margin-top: 20px;
-    color: #dc3545; /* Vermelho para destaque de sair */
+    color: #dc3545; 
 }
 .logout-link:hover {
     background-color: #dc3545;
@@ -77,10 +73,9 @@ main.perfil-layout {
     color: #333;
     margin-bottom: 30px;
     padding-bottom: 10px;
-    border-bottom: 2px solid #007bff; /* Linha de destaque azul */
+    border-bottom: 2px solid #007bff;
 }
 
-/* Layout do Formulário (Duas Colunas) */
 .form-perfil {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -126,7 +121,6 @@ main.perfil-layout {
     min-height: 100px;
 }
 
-/* Botão Salvar */
 .btn-salvar {
     margin-top: 30px;
     width: 100%;
@@ -134,7 +128,6 @@ main.perfil-layout {
     font-size: 1rem;
 }
 
-/* Responsividade Básica */
 @media (max-width: 992px) {
     .perfil-layout {
         flex-direction: column;
@@ -147,25 +140,19 @@ main.perfil-layout {
         border-radius: 12px 12px 0 0;
     }
     .form-perfil {
-        grid-template-columns: 1fr; /* Volta para uma coluna em telas menores */
+        grid-template-columns: 1fr;
     }
 
 }
 
-/* =================================================================
-   3. ESTILO PARA A SEÇÃO DE SEGURANÇA (Mudar Senha)
-   ================================================================= */
-
-/* Estilo específico para o Formulário de Senha */
 .form-senha {
-    max-width: 450px; /* Limita a largura para centralizar o foco */
+    max-width: 450px;
     padding: 20px;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     background-color: #fff;
     box-shadow: 0 1px 5px rgba(0,0,0,0.05);
 }
-/* Reutiliza os estilos de inputs e labels do .form-perfil */
 .form-senha label {
     display: block;
     font-weight: 600;
@@ -193,15 +180,10 @@ main.perfil-layout {
     margin-top: 25px;
 }
 
-/* =================================================================
-   4. ESTILOS GERAIS PARA MENSAGENS DE ALERTA (Sucesso/Erro)
-   ================================================================= */
-
-/* Container do Alerta */
 .alerta {
     padding: 15px;
-    margin: 10px auto 20px auto; /* Centraliza e adiciona margem */
-    max-width: 900px; /* Limita a largura para não ser tela cheia */
+    margin: 10px auto 20px auto;
+    max-width: 900px; 
     border-radius: 8px;
     font-weight: 600;
     text-align: center;
@@ -209,13 +191,13 @@ main.perfil-layout {
 }
 
 .alerta-sucesso {
-    background-color: #d4edda; /* Verde claro */
-    color: #155724; /* Texto verde escuro */
+    background-color: #d4edda; 
+    color: #155724;
     border-color: #c3e6cb;
 }
 
 .alerta-erro {
-    background-color: #f8d7da; /* Vermelho claro */
-    color: #721c24; /* Texto vermelho escuro */
+    background-color: #f8d7da; 
+    color: #721c24; 
     border-color: #f5c6cb;
 }

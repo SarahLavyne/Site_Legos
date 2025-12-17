@@ -1,15 +1,12 @@
 <?php
-// Garante que a conexão exista
 if (!isset($conn)) {
     include_once __DIR__ . '/../../conexao.php';
 }
 
-// 1. Faturamento Total (Soma de todos os pedidos não cancelados)
 $sql_faturamento = "SELECT SUM(total) as total_geral FROM pedidos WHERE status != 'Cancelado'";
 $res_fat = $conn->query($sql_faturamento);
 $faturamento = $res_fat->fetch_assoc()['total_geral'] ?? 0;
 
-// 2. Top 5 Produtos Mais Vendidos (Baseado na sua tabela itens_pedido)
 $sql_top_produtos = "
     SELECT pr.nome, SUM(ip.quantidade) as total_vendas 
     FROM itens_pedido ip 
@@ -25,7 +22,6 @@ while($row = $res_top_p->fetch_assoc()){
     $qtd_vendas[] = (int)$row['total_vendas'];
 }
 
-// 3. Top 5 Clientes que mais gastaram
 $sql_top_clientes = "
     SELECT u.nome, SUM(p.total) as total_gasto 
     FROM pedidos p 
@@ -42,7 +38,6 @@ while($row = $res_top_c->fetch_assoc()){
     $total_clientes[] = (float)$row['total_gasto'];
 }
 
-// Verificação para exibição de mensagens caso não haja dados
 $tem_dados_produtos = count($nomes_produtos) > 0;
 $tem_dados_clientes = count($nomes_clientes) > 0;
 ?>
@@ -139,7 +134,6 @@ $tem_dados_clientes = count($nomes_clientes) > 0;
 
 <script>
 <?php if($tem_dados_produtos): ?>
-    // Gráfico de Barras - Produtos
     new Chart(document.getElementById('graficoProdutos'), {
         type: 'bar',
         data: {
@@ -162,7 +156,6 @@ $tem_dados_clientes = count($nomes_clientes) > 0;
 <?php endif; ?>
 
 <?php if($tem_dados_clientes): ?>
-    // Gráfico de Pizza/Doughnut - Clientes
     new Chart(document.getElementById('graficoClientes'), {
         type: 'doughnut',
         data: {

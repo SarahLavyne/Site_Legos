@@ -1,15 +1,12 @@
 <?php
 session_start();
-// Caminho corrigido para subir um nível e encontrar a conexão
 include '../conexao.php';
 
-// 1. VERIFICAÇÃO DE SEGURANÇA CRUCIAL: APENAS ADMINISTRADORES
 if (!isset($_SESSION['usuario_id']) || $_SESSION['perfil'] !== 'administrador') {
     header("Location: ../LOGIN/login.php");
     exit;
 }
 
-// Função para lidar com o upload de imagens (Reutilizável)
 function handleUpload($file, $imagem_antiga = null) {
     if (isset($file) && $file['error'] === UPLOAD_ERR_OK) {
         
@@ -22,7 +19,6 @@ function handleUpload($file, $imagem_antiga = null) {
             return ['status' => false, 'nome' => 'erro_upload'];
         }
         
-        // Se houver imagem antiga, deleta ela
         if ($imagem_antiga) {
             $caminho_antigo = '../INICIO/imagens/' . $imagem_antiga;
             if (file_exists($caminho_antigo)) {
@@ -33,18 +29,13 @@ function handleUpload($file, $imagem_antiga = null) {
         return ['status' => true, 'nome' => $imagem_nome];
     }
     
-    // Retorna a imagem antiga se não houver novo upload
     return ['status' => false, 'nome' => $imagem_antiga];
 }
 
-// =================================================================
-// 2. PROCESSAMENTO DE AÇÕES VIA POST (Adicionar, Editar Produto, Editar Status Pedido)
-// =================================================================
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $acao = isset($_POST['acao']) ? $_POST['acao'] : '';
 
-    // Coleta de dados comum para Produtos
     if (in_array($acao, ['adicionar_produto', 'editar_produto'])) {
         $nome = $conn->real_escape_string(trim($_POST['nome']));
         $descricao = $conn->real_escape_string(trim($_POST['descricao']));
@@ -55,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $destaque = isset($_POST['destaque']) ? 1 : 0;
     }
 
-    // AÇÃO 2.1: ADICIONAR NOVO PRODUTO (CREATE)
     if ($acao === 'adicionar_produto') {
         
         $upload_resultado = handleUpload($_FILES['imagem']);
@@ -78,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     
-    // AÇÃO 2.2: EDITAR PRODUTO (UPDATE)
     if ($acao === 'editar_produto') {
         
         $imagem_antiga = $conn->real_escape_string($_POST['imagem_antiga']);
@@ -113,7 +102,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     
-    // AÇÃO 2.3: EDITAR STATUS DO PEDIDO (NOVO)
     if ($acao === 'editar_status_pedido') {
         
         $pedido_id = isset($_POST['id']) ? intval($_POST['id']) : 0;
@@ -137,14 +125,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 
-// =================================================================
-// 3. PROCESSAMENTO DE AÇÕES VIA GET (Apagar Produto e Cliente)
-// =================================================================
 } else if ($_SERVER["REQUEST_METHOD"] == "GET") {
     
     $acao = isset($_GET['acao']) ? $_GET['acao'] : '';
     
-    // AÇÃO 3.1: APAGAR PRODUTO (DELETE)
     if ($acao === 'apagar_produto') {
         
         $produto_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -174,7 +158,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
     
-    // AÇÃO 3.2: APAGAR CLIENTE (DELETE)
     if ($acao === 'apagar_cliente') {
         
         $cliente_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -187,7 +170,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($resultado_perfil->num_rows > 0) {
                 $usuario = $resultado_perfil->fetch_assoc();
 
-                // Só apaga se for realmente um 'cliente'
                 if ($usuario['perfil'] === 'cliente') {
                     
                     $sql_deletar = "DELETE FROM usuarios WHERE id = $cliente_id";
@@ -207,7 +189,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 $conn->close();
-// Redireciona para o painel se a requisição não for reconhecida
 header("Location: adm.php");
 exit;
 ?>

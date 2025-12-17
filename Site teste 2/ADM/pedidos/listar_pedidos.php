@@ -1,5 +1,4 @@
 <?php
-// Tabela de status para fácil visualização
 $status_pedidos = [
     'pendente' => ['label' => 'Pagamento Pendente', 'class' => 'status-pendente'],
     'pago' => ['label' => 'Pago e Processando', 'class' => 'status-pago'],
@@ -8,7 +7,6 @@ $status_pedidos = [
     'cancelado' => ['label' => 'Cancelado', 'class' => 'status-cancelado']
 ];
 
-// 1. Busca os pedidos no banco de dados, fazendo um JOIN com a tabela de usuários
 $sql_pedidos = "
     SELECT 
         p.id, 

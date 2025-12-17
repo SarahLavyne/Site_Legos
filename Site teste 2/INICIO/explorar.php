@@ -2,25 +2,21 @@
     session_start();
     include '../conexao.php'; 
 
-    // 1. Capturar os filtros via GET
     $categoria_filtro = isset($_GET['categoria']) ? $_GET['categoria'] : '';
     $ordem_filtro = isset($_GET['ordem']) ? $_GET['ordem'] : 'recente';
 
-    // 2. Construir a query SQL dinamicamente
     $sql = "SELECT id, nome, preco, categoria, imagem_url FROM produtos WHERE 1=1";
 
     if ($categoria_filtro != '') {
         $cat_safe = $conn->real_escape_string($categoria_filtro);
         $sql .= " AND categoria = '$cat_safe'";
     }
-
-    // Definir a ordenação
     if ($ordem_filtro == 'caro') {
         $sql .= " ORDER BY preco DESC";
     } elseif ($ordem_filtro == 'barato') {
         $sql .= " ORDER BY preco ASC";
     } else {
-        $sql .= " ORDER BY id DESC"; // Padrão: Mais recentes
+        $sql .= " ORDER BY id DESC"; 
     }
 
     $resultado = $conn->query($sql);

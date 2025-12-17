@@ -8,10 +8,9 @@ if (!isset($_SESSION['usuario_id']) || !isset($_POST['selecionados'])) {
 }
 
 $usuario_id = $_SESSION['usuario_id'];
-$selecionados = $_POST['selecionados']; // IDs do carrinho selecionados
+$selecionados = $_POST['selecionados']; 
 $ids_string = implode(',', array_map('intval', $selecionados));
 
-// Busca os detalhes apenas dos produtos selecionados
 $sql = "SELECT c.quantidade, p.nome, p.preco 
         FROM carrinho c 
         JOIN produtos p ON c.produto_id = p.id 
@@ -26,7 +25,6 @@ while ($row = $resultado->fetch_assoc()) {
     $itens[] = $row;
 }
 
-// Gera um código de retirada simulado (Ex: BRICK-7492)
 $codigo_retirada = "BRICK-" . rand(1000, 9999);
 $_SESSION['temp_total'] = $total_final;
 $_SESSION['temp_itens'] = $selecionados;

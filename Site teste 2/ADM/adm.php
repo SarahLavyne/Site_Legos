@@ -1,9 +1,7 @@
 <?php
 session_start();
-// Caminho de conexão corrigido: sobe um nível (..) para encontrar o arquivo na raiz
 include '../conexao.php'; 
 
-// 1. VERIFICAÇÃO DE SEGURANÇA CRUCIAL: Acesso apenas para Administradores
 if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['perfil']) || $_SESSION['perfil'] !== 'administrador') {
     header("Location: ../LOGIN/login.php");
     exit;
@@ -11,10 +9,8 @@ if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['perfil']) || $_SESSION[
 
 $usuario_nome = $_SESSION['usuario_nome'];
 
-// 2. Lógica para determinar a seção ativa (Produtos é o padrão)
 $secao_ativa = isset($_GET['secao']) ? $_GET['secao'] : 'produtos';
 
-// Lógica para exibir mensagens de status
 $mensagem = '';
 $classe = '';
 if (isset($_GET['status'])) {
@@ -78,11 +74,9 @@ if (isset($_GET['status'])) {
             <div class="conteudo-card">
                 
                 <?php 
-                // 3. SWITCH CASE PARA CARREGAR O CONTEÚDO CORRETO
                 switch ($secao_ativa):
                     
                     case 'produtos':
-                        // O arquivo está em ADM/produtos/produtos.php
                         if (file_exists('produtos/produtos.php')) {
                             include 'produtos/produtos.php'; 
                         } else {
@@ -91,7 +85,6 @@ if (isset($_GET['status'])) {
                         break;
                     
                     case 'clientes':
-                        // O arquivo está em ADM/clientes/clientes.php
                         if (file_exists('clientes/clientes.php')) {
                             include 'clientes/clientes.php';
                         } else {
@@ -100,7 +93,6 @@ if (isset($_GET['status'])) {
                         break;
                     
                     case 'pedidos':
-                        // O arquivo está em ADM/pedidos/pedidos.php
                         if (file_exists('pedidos/pedidos.php')) {
                             echo '<h2>Gerenciamento de Pedidos e Status</h2><hr>';
                             include 'pedidos/pedidos.php'; 
@@ -129,6 +121,5 @@ if (isset($_GET['status'])) {
 </body>
 </html>
 <?php 
-// Fecha a conexão com o banco de dados
 $conn->close(); 
 ?>

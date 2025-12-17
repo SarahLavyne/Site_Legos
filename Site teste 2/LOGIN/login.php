@@ -1,32 +1,27 @@
 <?php
 session_start();
 
-// Verifica se o usuário já está logado
 if (isset($_SESSION['usuario_id'])) {
     header("Location: ../INICIO/index.php");
     exit;
 }
 
-// 1. LÓGICA PARA CAPTURAR E PREPARAR AS MENSAGENS DE STATUS
 $mensagem = '';
 $classe = '';
-$form_ativo = 'loginForm'; // Padrão: mostra o Login
+$form_ativo = 'loginForm'; 
 
 if (isset($_GET['status'])) {
     $status = $_GET['status'];
     
-    // Feedback de LOGIN
     if ($status === 'login_erro') {
         $mensagem = "Credenciais inválidas. Verifique seu e-mail/usuário e senha.";
         $classe = 'alerta-erro';
     } 
-    // Feedback de CADASTRO - SUCESSO
     elseif ($status === 'cadastro_sucesso') {
         $mensagem = "🎉 Cadastro realizado com sucesso! Você já pode acessar sua conta.";
         $classe = 'alerta-sucesso';
-        $form_ativo = 'loginForm'; // Sucesso no cadastro leva ao login
+        $form_ativo = 'loginForm'; 
     } 
-    // Feedback de CADASTRO - ERROS ESPECÍFICOS (Mantém o formulário de cadastro ativo)
     elseif ($status === 'cadastro_erro_email') {
         $mensagem = "O e-mail ou CPF informado já está cadastrado.";
         $classe = 'alerta-erro';

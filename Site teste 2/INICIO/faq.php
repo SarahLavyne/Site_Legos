@@ -17,7 +17,6 @@ session_start();
             faqItems.forEach(item => {
                 const header = item.querySelector('.faq-pergunta');
                 header.addEventListener('click', () => {
-                    // Fecha todos os itens abertos
                     faqItems.forEach(i => {
                         if (i !== item && i.classList.contains('ativo')) {
                             i.classList.remove('ativo');
@@ -25,12 +24,10 @@ session_start();
                         }
                     });
 
-                    // Alterna o estado do item clicado
                     item.classList.toggle('ativo');
                     const answer = item.querySelector('.faq-resposta');
                     
                     if (item.classList.contains('ativo')) {
-                        // Define o maxHeight para a altura real do conteúdo para abrir suavemente
                         answer.style.maxHeight = answer.scrollHeight + "px";
                     } else {
                         answer.style.maxHeight = null;
@@ -145,7 +142,6 @@ session_start();
 </html>
 
 <style>
-/* Estilos Específicos para a página FAQ (Accordion) */
 .faq-page {
     padding-top: 40px;
 }

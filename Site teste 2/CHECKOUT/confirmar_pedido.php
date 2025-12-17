@@ -2,7 +2,6 @@
 session_start();
 include '../conexao.php';
 
-// 1. Verifica se existem dados da sessão do checkout
 if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['temp_codigo'])) {
     header("Location: ../CARRINHO/carrinho.php");
     exit;
@@ -12,20 +11,16 @@ $usuario_id = $_SESSION['usuario_id'];
 $total = $_SESSION['temp_total'];
 $codigo_retirada = $_SESSION['temp_codigo'];
 $metodo_pagamento = $_POST['metodo'] ?? 'loja';
-$itens_selecionados = $_SESSION['temp_itens']; // IDs da tabela 'carrinho'
+$itens_selecionados = $_SESSION['temp_itens']; 
 
-// Define o status inicial
 $status = ($metodo_pagamento === 'pix_online') ? 'Pago (Aguardando Retirada)' : 'Pendente (Pagar na Loja)';
 
-// 2. INSERIR NA TABELA DE PEDIDOS
 $sql_pedido = "INSERT INTO pedidos (usuario_id, total, metodo_pagamento, codigo_retirada, status, data_pedido) 
                VALUES ('$usuario_id', '$total', '$metodo_pagamento', '$codigo_retirada', '$status', NOW())";
 
 if ($conn->query($sql_pedido) === TRUE) {
-    $pedido_id = $conn->insert_id; // Pega o ID do pedido que acabou de ser criado
+    $pedido_id = $conn->insert_id; 
 
-    // 3. SALVAR ITENS NA TABELA 'itens_pedido' PARA O RELATÓRIO
-    // Buscamos os detalhes dos produtos que estão no carrinho agora para registrar o histórico
     $ids_string = implode(',', array_map('intval', $itens_selecionados));
     $sql_busca_itens = "SELECT produto_id, quantidade, preco FROM carrinho 
                         INNER JOIN produtos ON carrinho.produto_id = produtos.id 
@@ -39,18 +34,15 @@ if ($conn->query($sql_pedido) === TRUE) {
             $qtd = $item['quantidade'];
             $preco_un = $item['preco'];
 
-            // Insere na sua tabela de itens_pedido
             $sql_insere_item = "INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, preco_unitario) 
                                 VALUES ('$pedido_id', '$prod_id', '$qtd', '$preco_un')";
             $conn->query($sql_insere_item);
         }
     }
 
-    // 4. REMOVER ITENS DO CARRINHO (Apenas os que foram comprados)
     $sql_limpar_carrinho = "DELETE FROM carrinho WHERE id IN ($ids_string) AND usuario_id = '$usuario_id'";
     $conn->query($sql_limpar_carrinho);
 
-    // 5. Limpar variáveis temporárias da sessão
     unset($_SESSION['temp_total']);
     unset($_SESSION['temp_itens']);
     unset($_SESSION['temp_codigo']);

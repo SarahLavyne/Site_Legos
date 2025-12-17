@@ -1,19 +1,12 @@
-// ==========================================================
-// LÓGICA ESPECÍFICA DA PÁGINA DO CARRINHO (carrinho.php)
-// ==========================================================
-
-// --- FUNÇÃO DE UTILIDADE ---
 function formatCurrencyBRL(value) {
     return 'R$ ' + parseFloat(value).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-// --- LÓGICA DE ATUALIZAÇÃO DE QUANTIDADE AJAX (+ / -) ---
 document.querySelectorAll(".btn-qty-plus, .btn-qty-minus").forEach(button => {
     button.addEventListener("click", function() {
         
         const td = this.closest('td'); 
         
-        // --- CORREÇÃO AQUI: Use carrinhoId (I maiúsculo) ---
         const carrinhoId = td.dataset.carrinhoId; 
         
         const precoUnitario = parseFloat(td.dataset.preco);
@@ -36,7 +29,6 @@ document.querySelectorAll(".btn-qty-plus, .btn-qty-minus").forEach(button => {
 
         qtyInput.value = newQty;
 
-        // AJAX
         fetch('processa_carrinho.php', { 
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -54,7 +46,6 @@ document.querySelectorAll(".btn-qty-plus, .btn-qty-minus").forEach(button => {
             const newSubtotal = newQty * precoUnitario;
             subtotalTd.textContent = formatCurrencyBRL(newSubtotal);
 
-            // Atualiza Total Geral
             if (resumoTotal) {
                  resumoTotal.innerHTML = `Total da Compra: <strong>${formatCurrencyBRL(totalFloat)}</strong>`;
             }
@@ -70,12 +61,10 @@ document.querySelectorAll(".btn-qty-plus, .btn-qty-minus").forEach(button => {
     });
 });
 
-// --- LÓGICA PARA DIGITAÇÃO DIRETA NO INPUT (Evento Change) ---
 document.querySelectorAll(".qty-input").forEach(input => {
     input.addEventListener("change", function() {
         const td = this.closest('td');
         
-        // --- CORREÇÃO AQUI TAMBÉM: Use carrinhoId (I maiúsculo) ---
         const carrinhoId = td.dataset.carrinhoId;
         
         const precoUnitario = parseFloat(td.dataset.preco);
@@ -119,23 +108,16 @@ document.querySelectorAll(".qty-input").forEach(input => {
         });
     });
 });
-// ... (Mantenha o código anterior de atualização de quantidade aqui) ...
 
-// ==========================================================
-// LÓGICA PARA ADICIONAR ITEM DAS SUGESTÕES (Upsell)
-// ==========================================================
 
 document.querySelectorAll(".btn-add-cart-sugestao").forEach(button => {
     button.addEventListener("click", function() {
         const produtoId = this.dataset.id;
         const originalText = this.textContent;
         
-        // Feedback visual imediato
         this.disabled = true;
         this.textContent = "Adicionando...";
 
-        // AJAX para adicionar ao carrinho
-        // O arquivo adicionar_carrinho.php está na mesma pasta (CARRINHO/), então o caminho é direto
         fetch('adicionar_carrinho.php', { 
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},

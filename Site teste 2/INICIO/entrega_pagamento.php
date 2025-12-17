@@ -1,6 +1,5 @@
 <?php 
 session_start();
-// O conteúdo desta página é informativo e não requer conexão com o banco de dados.
 ?>
 
 <!DOCTYPE html>
