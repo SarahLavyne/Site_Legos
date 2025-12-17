@@ -57,10 +57,6 @@ $produto = $result->fetch_assoc();
         <div class="detalhes-info">
             <h2 class="produto-titulo"><?php echo htmlspecialchars($produto['nome']); ?></h2>
             
-            <div class="avaliacao">
-                ⭐⭐⭐⭐⭐ (4.8) </div>
-
-            <hr class="divisor">
 
             <p class="preco-destaque">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
             <p class="pagamento-info">Pagamento somente no pix</p>

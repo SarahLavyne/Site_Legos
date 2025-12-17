@@ -138,7 +138,7 @@ $status_opcoes = [
 <div class="adm-container">
     <div class="header-edit">
         <h3>Editar Pedido #<?php echo $pedido['id']; ?></h3>
-        <a href="adm.php?secao=pedidos" class="btn-voltar">← Voltar</a>
+        <a href="../adm.php?secao=pedidos" class="btn-voltar">← Voltar</a>
     </div>
 
     <div class="info-grid">
@@ -173,7 +173,7 @@ $status_opcoes = [
 
         <div class="footer-buttons">
             <button type="submit" class="btn-salvar">Confirmar Alteração</button>
-            <a href="adm.php?secao=pedidos" class="btn-cancelar">Cancelar</a>
+            <a href="../adm.php?secao=pedidos" class="btn-cancelar">Cancelar</a>
         </div>
     </form>
 </div>

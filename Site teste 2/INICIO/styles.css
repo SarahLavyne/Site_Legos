@@ -31,7 +31,8 @@ body {
   align-items: center;
 }
 
-.logo h1 {
+.logo h1 
+.logo h3{
   font-size: 1.8rem;
   background: linear-gradient(135deg, #ff4757, #ffa502, #ffd32a, #05c46b, #0abde3);
   -webkit-background-clip: text;

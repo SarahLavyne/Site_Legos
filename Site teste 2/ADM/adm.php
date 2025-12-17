@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../conexao.php'; 
+   include '../conexao.php'; 
 
 if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['perfil']) || $_SESSION['perfil'] !== 'administrador') {
     header("Location: ../LOGIN/login.php");
